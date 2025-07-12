@@ -1,0 +1,665 @@
+{
+  "classes_object": [
+    {
+      "file": "mosaicode/system.py",
+      "instances": [
+        {
+          "line": 22,
+          "content": "class System(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/authormodel.py",
+      "instances": [
+        {
+          "line": 3,
+          "content": "class AuthorModel(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/codetemplate.py",
+      "instances": [
+        {
+          "line": 4,
+          "content": "class CodeTemplate(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/connectionmodel.py",
+      "instances": [
+        {
+          "line": 5,
+          "content": "class ConnectionModel(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/port.py",
+      "instances": [
+        {
+          "line": 4,
+          "content": "class Port(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/blockmodel.py",
+      "instances": [
+        {
+          "line": 4,
+          "content": "class BlockModel(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/preferences.py",
+      "instances": [
+        {
+          "line": 5,
+          "content": "class Preferences(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/commentmodel.py",
+      "instances": [
+        {
+          "line": 6,
+          "content": "class CommentModel(object):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/diagrammodel.py",
+      "instances": [
+        {
+          "line": 3,
+          "content": "class DiagramModel(object):"
+        }
+      ]
+    }
+  ],
+  "print_statements": [
+    {
+      "file": "0. context/analise-automatizada.py",
+      "instances": [
+        {
+          "line": 38,
+          "content": "print(f\"Erro ao ler {file_path}: {e}\")"
+        },
+        {
+          "line": 93,
+          "content": "print(\"🔍 Iniciando análise do projeto...\")"
+        },
+        {
+          "line": 97,
+          "content": "print(f\"📁 Encontrados {len(python_files)} arquivos Python\")"
+        },
+        {
+          "line": 154,
+          "content": "report.append(\"## 🖨️ Statements `print()`\")"
+        },
+        {
+          "line": 194,
+          "content": "print(\"🚀 Iniciando análise automatizada do Mosaicode...\")"
+        },
+        {
+          "line": 209,
+          "content": "print(\"✅ Análise concluída!\")"
+        },
+        {
+          "line": 210,
+          "content": "print(f\"📊 Arquivos analisados: {results['files_analyzed']}\")"
+        },
+        {
+          "line": 211,
+          "content": "print(f\"🏗️ Classes object: {len(results['classes_object'])}\")"
+        },
+        {
+          "line": 212,
+          "content": "print(f\"🖨️ Print statements: {len(results['print_statements'])}\")"
+        },
+        {
+          "line": 213,
+          "content": "print(f\"⚠️ Exceptions genéricas: {len(results['generic_exceptions'])}\")"
+        },
+        {
+          "line": 214,
+          "content": "print(f\"📂 Usos de os.path: {len(results['os_path_usage'])}\")"
+        },
+        {
+          "line": 215,
+          "content": "print(\"📄 Relatórios salvos em '0. context/'\")"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/system.py",
+      "instances": [
+        {
+          "line": 207,
+          "content": "print(\"Error in loading block \" + key)"
+        },
+        {
+          "line": 284,
+          "content": "print(\"Could not set logger\")"
+        },
+        {
+          "line": 293,
+          "content": "print(msg)"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/codetemplatepersistence.py",
+      "instances": [
+        {
+          "line": 68,
+          "content": "print(e)"
+        }
+      ]
+    }
+  ],
+  "generic_exceptions": [
+    {
+      "file": "0. context/analise-automatizada.py",
+      "instances": [
+        {
+          "line": 164,
+          "content": "report.append(\"## ⚠️ Exceptions Genéricas (`except:`)\")"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/system.py",
+      "instances": [
+        {
+          "line": 77,
+          "content": "except:"
+        },
+        {
+          "line": 206,
+          "content": "except:"
+        },
+        {
+          "line": 283,
+          "content": "except:"
+        },
+        {
+          "line": 292,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/persistence.py",
+      "instances": [
+        {
+          "line": 32,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/preferencespersistence.py",
+      "instances": [
+        {
+          "line": 63,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/blockpersistence.py",
+      "instances": [
+        {
+          "line": 67,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/portpersistence.py",
+      "instances": [
+        {
+          "line": 55,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/plugins/extensionsmanager/codetemplatecodeeditor.py",
+      "instances": [
+        {
+          "line": 202,
+          "content": "except:"
+        },
+        {
+          "line": 210,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/plugins/extensionsmanager/blockcodeeditor.py",
+      "instances": [
+        {
+          "line": 211,
+          "content": "except:"
+        },
+        {
+          "line": 219,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/plugins/extensionsmanager/propertyeditor.py",
+      "instances": [
+        {
+          "line": 171,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/plugins/extensionsmanager/blockporteditor.py",
+      "instances": [
+        {
+          "line": 183,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/GUI/fields/floatfield.py",
+      "instances": [
+        {
+          "line": 45,
+          "content": "except:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/GUI/fields/colorfield.py",
+      "instances": [
+        {
+          "line": 70,
+          "content": "except:"
+        }
+      ]
+    }
+  ],
+  "os_path_usage": [
+    {
+      "file": "mosaicode/system.py",
+      "instances": [
+        {
+          "line": 54,
+          "content": "path = os.path.join(System.get_user_dir(), name)"
+        },
+        {
+          "line": 55,
+          "content": "if not os.path.isdir(path):"
+        },
+        {
+          "line": 97,
+          "content": "extension_path = os.path.join(System.get_user_dir(),\"extensions\")"
+        },
+        {
+          "line": 99,
+          "content": "path = os.path.join(extension_path, language)"
+        },
+        {
+          "line": 100,
+          "content": "path = os.path.join(path, \"examples\")"
+        },
+        {
+          "line": 102,
+          "content": "file_path = os.path.join(path, filename)"
+        },
+        {
+          "line": 159,
+          "content": "if not os.path.exists(data_dir):"
+        },
+        {
+          "line": 163,
+          "content": "lang_path = os.path.join(data_dir, languages)"
+        },
+        {
+          "line": 166,
+          "content": "for file_name in os.listdir(os.path.join(lang_path, \"codetemplates\")):"
+        },
+        {
+          "line": 169,
+          "content": "file_path = os.path.join(lang_path,\"codetemplates\")"
+        },
+        {
+          "line": 170,
+          "content": "file_path = os.path.join(file_path, file_name)"
+        },
+        {
+          "line": 177,
+          "content": "for file_name in os.listdir(os.path.join(lang_path,\"ports\")):"
+        },
+        {
+          "line": 180,
+          "content": "file_path = os.path.join(lang_path,\"ports\")"
+        },
+        {
+          "line": 181,
+          "content": "file_path = os.path.join(file_path, file_name)"
+        },
+        {
+          "line": 188,
+          "content": "for extension_name in os.listdir(os.path.join(lang_path,\"blocks\")):"
+        },
+        {
+          "line": 189,
+          "content": "extension_path = os.path.join(lang_path, \"blocks\")"
+        },
+        {
+          "line": 190,
+          "content": "extension_path = os.path.join(extension_path, extension_name)"
+        },
+        {
+          "line": 192,
+          "content": "group_path = os.path.join(extension_path, group_name)"
+        },
+        {
+          "line": 196,
+          "content": "file_path = os.path.join(group_path, file_name)"
+        },
+        {
+          "line": 298,
+          "content": "home_dir = os.path.expanduser(\"~\")"
+        },
+        {
+          "line": 299,
+          "content": "return os.path.join(home_dir, System.APP)"
+        }
+      ]
+    },
+    {
+      "file": "docs/source/conf.py",
+      "instances": [
+        {
+          "line": 20,
+          "content": "# documentation root, use os.path.abspath to make it absolute, like shown here."
+        },
+        {
+          "line": 21,
+          "content": "sys.path.insert(0, os.path.abspath('../..'))"
+        }
+      ]
+    },
+    {
+      "file": "docs/source/_themes/sphinx_rtd_theme/__init__.py",
+      "instances": [
+        {
+          "line": 14,
+          "content": "cur_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/persistence.py",
+      "instances": [
+        {
+          "line": 26,
+          "content": "if os.path.isdir(path):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/preferencespersistence.py",
+      "instances": [
+        {
+          "line": 28,
+          "content": "file_name = os.path.expanduser(file_name)"
+        },
+        {
+          "line": 29,
+          "content": "if os.path.exists(file_name) is False:"
+        },
+        {
+          "line": 34,
+          "content": "if os.path.exists(file_name) is False:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/diagrampersistence.py",
+      "instances": [
+        {
+          "line": 32,
+          "content": "if os.path.exists(diagram.file_name) is False:"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/blockpersistence.py",
+      "instances": [
+        {
+          "line": 30,
+          "content": "if os.path.exists(file_name) is False:"
+        },
+        {
+          "line": 129,
+          "content": "path = os.path.join(path, file_name + '.json')"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/portpersistence.py",
+      "instances": [
+        {
+          "line": 31,
+          "content": "if os.path.exists(file_name) is False:"
+        },
+        {
+          "line": 89,
+          "content": "data_file = open(os.path.join(path, port.type + '.json'), 'w')"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/persistence/codetemplatepersistence.py",
+      "instances": [
+        {
+          "line": 32,
+          "content": "if os.path.exists(file_name) is False:"
+        },
+        {
+          "line": 34,
+          "content": "if os.path and os.path.isdir(file_name):"
+        },
+        {
+          "line": 113,
+          "content": "data_file = open(os.path.join(path, file_name + '.json'), 'w')"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/utils/FileUtils.py",
+      "instances": [
+        {
+          "line": 11,
+          "content": "directory = os.path.dirname(os.path.realpath('__file__'))"
+        },
+        {
+          "line": 12,
+          "content": "filename = os.path.join(directory, filename)"
+        },
+        {
+          "line": 13,
+          "content": "filename = os.path.abspath(os.path.realpath(filename))"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/control/blockcontrol.py",
+      "instances": [
+        {
+          "line": 88,
+          "content": "path = os.path.join(System.get_user_dir(),\"extensions\")"
+        },
+        {
+          "line": 89,
+          "content": "path = os.path.join(path, block.language)"
+        },
+        {
+          "line": 90,
+          "content": "path = os.path.join(path, \"blocks\")"
+        },
+        {
+          "line": 91,
+          "content": "path = os.path.join(path, block.extension)"
+        },
+        {
+          "line": 92,
+          "content": "path = os.path.join(path, block.group)"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/control/codetemplatecontrol.py",
+      "instances": [
+        {
+          "line": 36,
+          "content": "path = os.path.join(System.get_user_dir(), \"extensions\")"
+        },
+        {
+          "line": 37,
+          "content": "path = os.path.join(path, code_template.language)"
+        },
+        {
+          "line": 38,
+          "content": "path = os.path.join(path, \"codetemplates\")"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/control/diagramcontrol.py",
+      "instances": [
+        {
+          "line": 303,
+          "content": "if not os.path.exists(self.diagram.file_name):"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/control/maincontrol.py",
+      "instances": [
+        {
+          "line": 139,
+          "content": "if os.path.exists(name) is True:"
+        },
+        {
+          "line": 186,
+          "content": "if name is not None and os.path.exists(name) is True:"
+        },
+        {
+          "line": 662,
+          "content": "path = os.path.join(path, folder, ports[key].language, 'ports')"
+        },
+        {
+          "line": 669,
+          "content": "path = os.path.join(path,"
+        },
+        {
+          "line": 681,
+          "content": "path = os.path.join(path,"
+        },
+        {
+          "line": 689,
+          "content": "path = os.path.join(path, \"extensions\")"
+        },
+        {
+          "line": 692,
+          "content": "relpath = os.path.relpath(example, path)"
+        },
+        {
+          "line": 694,
+          "content": "path = os.path.join(path, folder, relpath)"
+        },
+        {
+          "line": 695,
+          "content": "os.makedirs(os.path.dirname(path), exist_ok=True)"
+        },
+        {
+          "line": 700,
+          "content": "path = os.path.join(path, folder+\".zip\")"
+        },
+        {
+          "line": 704,
+          "content": "path = os.path.join(path, folder)"
+        },
+        {
+          "line": 708,
+          "content": "filePath = os.path.join(folderName, filename)"
+        },
+        {
+          "line": 711,
+          "content": "zip_file.write(filePath, os.path.relpath(filePath, path))"
+        },
+        {
+          "line": 715,
+          "content": "path = os.path.join(path, folder)"
+        },
+        {
+          "line": 721,
+          "content": "path = os.path.join(path, filename)"
+        },
+        {
+          "line": 747,
+          "content": "file_path = os.path.join(System.get_user_dir(), file_name)"
+        },
+        {
+          "line": 751,
+          "content": "destination = os.path.join(System.get_user_dir(), \"extensions\")"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/control/portcontrol.py",
+      "instances": [
+        {
+          "line": 42,
+          "content": "path = os.path.join(System.get_user_dir(), \"extensions\")"
+        },
+        {
+          "line": 43,
+          "content": "path = os.path.join(path, port.language, \"ports\")"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/model/preferences.py",
+      "instances": [
+        {
+          "line": 22,
+          "content": "self.default_directory = os.path.join(System.get_user_dir(), \"code-gen\")"
+        }
+      ]
+    },
+    {
+      "file": "mosaicode/GUI/fields/openfilefield.py",
+      "instances": [
+        {
+          "line": 65,
+          "content": "if os.path.isdir(self.field.get_text()):"
+        },
+        {
+          "line": 68,
+          "content": "current_dir = os.path.dirname(self.field.get_text())"
+        }
+      ]
+    }
+  ],
+  "imports": [],
+  "files_analyzed": 87
+}
