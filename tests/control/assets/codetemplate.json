@@ -1,0 +1,16 @@
+{
+  "name": "webaudio",
+  "type": "mosaicode_lib_javascript_webaudio.extensions.html",
+  "language": "javascript",
+  "command": "python -m webbrowser -t $dir_name$index.html ",
+  "description": "Javascript / webaudio code template",
+  "code_parts": [
+    "onload",
+    "function",
+    "declaration",
+    "execution",
+    "html"
+  ],
+  "properties": [],
+  "files": {}
+} 

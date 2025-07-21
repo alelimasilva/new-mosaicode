@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the PreferenceWindow class.
@@ -11,6 +11,7 @@ from mosaicode.GUI.fields.stringfield import StringField
 from mosaicode.GUI.fields.openfilefield import OpenFileField
 from mosaicode.GUI.fields.intfield import IntField
 import gettext
+from typing import Any, Dict, List, Optional, Union
 
 _ = gettext.gettext
 
@@ -20,7 +21,7 @@ class PreferenceWindow(Gtk.Dialog):
     This class contains methods related the PreferenceWindow class
     """
 
-    def __init__(self, main_window):
+    def __init__(self, main_window) -> None:
         """
         This method is the constructor.
         """
@@ -65,7 +66,7 @@ class PreferenceWindow(Gtk.Dialog):
         self.show_all()
 
     # ----------------------------------------------------------------------
-    def run(self):
+    def run(self) -> Any:
         response = super(Gtk.Dialog, self).run()
 
         if response == Gtk.ResponseType.OK:
@@ -74,7 +75,6 @@ class PreferenceWindow(Gtk.Dialog):
             self.properties.default_directory = self.default_directory.get_value()
             self.properties.default_filename = self.default_filename.get_value()
             self.properties.grid = self.grid.get_value()
-            self.properties.port = self.port.get_value()
             self.main_window.main_control.redraw(None)
 
         self.close()

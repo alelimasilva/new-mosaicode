@@ -12,7 +12,13 @@ Getting a copy of the project up and running on your local machine. Supported Pl
 Open the terminal (Ctrl+Alt+T) and run the following command to install the software dependencies:
 
 ```
-sudo apt install python3 libgtk-3-dev gir1.2-gtksource-3.0 gir1.2-goocanvas-2.0 python-cairo-dev python3-lxml python3-goocalendar python3-bs4 python3-soupsieve python-gi-dev python3-gi python3-gi-cairo gir1.2-gtk-3.0
+sudo apt install python3 python3-gi python3-cairo python3-gi-cairo gir1.2-gtk-3.0 libgirepository1.0-dev python3-dev build-essential pkg-config python3-pip python3-venv
+```
+
+**Alternative**: Use the Makefile for automatic installation:
+
+```
+make install_full
 ```
 
 ### Installation
@@ -36,6 +42,12 @@ Setting the virtual environment:
 1. Install PyGObject: `python -m pip install PyGObject`
 1. Install Mosaicode: `python setup.py install`
 
+**Alternative**: Use the Makefile for automatic virtual environment setup:
+
+```
+make install_venv
+```
+
 More details in the Python 3 *Virtual Environments and Packages* documentation: https://docs.python.org/3/tutorial/venv.html
 
 #### Operational System Directories
@@ -45,6 +57,21 @@ Run via terminal:
 ```
 sudo python setup.py install
 ```
+
+**Alternative**: Use the Makefile for system installation:
+
+```
+make install_full
+```
+
+### Useful Makefile Commands
+
+- `make help` - Show all available commands
+- `make check_deps` - Check if dependencies are properly installed
+- `make run` - Run Mosaicode in development mode
+- `make run_installed` - Run installed Mosaicode
+- `make test_normal` - Run tests
+- `make clean` - Clean build files
 
 ## Mosaicode Extensions
 

@@ -8,6 +8,7 @@ import os
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import gettext
+from typing import Any, Dict, List, Optional, Union
 _ = gettext.gettext
 
 
@@ -16,7 +17,7 @@ class OpenDialog(Gtk.FileChooserDialog):
     This class contains methods related the Dialog class.
     """
 
-    def __init__(self, title, main_window, filetype=None, path=None):
+    def __init__(self, title, main_window, filetype=None, path=None) -> None:
         """
         This method is the constuctor.
 
@@ -35,7 +36,12 @@ class OpenDialog(Gtk.FileChooserDialog):
         self.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         self.add_buttons(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
 
-        if path is not None:
+        # Always open in project root directory if no specific path is provided
+        if path is None:
+            from pathlib import Path
+            project_root = Path(__file__).parent.parent.parent
+            self.set_current_folder(str(project_root))
+        else:
             self.set_current_folder(path)
 
         if filetype is not None:
@@ -45,7 +51,7 @@ class OpenDialog(Gtk.FileChooserDialog):
             self.add_filter(filefilter)
         self.show_all()
 
-    def run(self):
+    def run(self) -> Any:
         response = super(Gtk.FileChooserDialog, self).run()
         file_name = None
         if response == Gtk.ResponseType.OK:

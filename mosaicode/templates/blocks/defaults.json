@@ -1,0 +1,39 @@
+{
+  "default_values": {
+    "id": -1,
+    "version": "0.0.1",
+    "x": 0,
+    "y": 0,
+    "is_collapsed": false,
+    "type": "",
+    "language": "",
+    "extension": "",
+    "file": null,
+    "help": "",
+    "label": "A",
+    "color": "#000000",
+    "group": "Undefined",
+    "ports": [],
+    "maxIO": 0,
+    "properties": [],
+    "codes": {},
+    "gen_codes": {},
+    "weight": 0,
+    "connections": []
+  },
+  "color_formats": {
+    "hex": "#RRGGBB",
+    "rgba": "R:G:B:A",
+    "default": "#000000"
+  },
+  "groups": [
+    "Undefined",
+    "Input",
+    "Output",
+    "Processing",
+    "GUI",
+    "Math",
+    "Logic",
+    "Control"
+  ]
+} 

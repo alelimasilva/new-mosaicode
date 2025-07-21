@@ -1,0 +1,42 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "rgb",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Creates RGB Color",
+  "label": "RGB",
+  "color": "50:150:0:150",
+  "group": "Conversion",
+  "codes": {
+    "declaration": "\n// $label$\nvar r$id$ = '00';\nvar g$id$ = '00';\nvar b$id$ = '00';\nvar $port[result]$ = [];\n\nfunction update_backgroud_color$id$(){\n    result = '#' + r$id$ + g$id$ + b$id$;\n    for (var i = 0; i < $port[result]$.length ; i++){\n        $port[result]$[i](result);\n    }\n}\n\nvar $port[r]$ = function(value){\n    value = Math.round(value);\n    r$id$ = value.toString(16);\n    if (value < 16)\n        r$id$ = '0'+ r$id$;\n    update_backgroud_color$id$();\n    return true;\n    };\n\nvar $port[g]$ = function(value){\n    value = Math.round(value);\n    g$id$ = value.toString(16);\n    if (value < 16)\n        g$id$ = '0'+ g$id$;\n    update_backgroud_color$id$();\n    return true;\n    };\n\nvar $port[b]$ = function(value){\n    value = Math.round(value);\n    b$id$ = value.toString(16);\n    if (value < 16)\n        b$id$ = '0'+ b$id$;\n    update_backgroud_color$id$();\n    return true;\n    };\n\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "r",
+      "conn_type": "Input",
+      "label": "Red"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "g",
+      "conn_type": "Input",
+      "label": "Green"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "b",
+      "conn_type": "Input",
+      "label": "Blue"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.color",
+      "name": "result",
+      "conn_type": "Output",
+      "label": "Color"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # noqa: E402
 """
@@ -8,6 +8,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GtkSource', '3.0')
 from gi.repository import Gtk
+from typing import Any, Dict, List, Optional, Union
 
 class TreeView(Gtk.ScrolledWindow):
     """
@@ -15,7 +16,7 @@ class TreeView(Gtk.ScrolledWindow):
     """
 
     # ----------------------------------------------------------------------
-    def __init__(self, title, action, data=None):
+    def __init__(self, title, action, data=None) -> None:
         Gtk.ScrolledWindow.__init__(self)
         self.list_store = Gtk.ListStore(str)
         self.tree_view = Gtk.TreeView.new_with_model(self.list_store)
@@ -28,7 +29,7 @@ class TreeView(Gtk.ScrolledWindow):
         col.add_attribute(cellrenderertext, "text", 0)
 
     # ----------------------------------------------------------------------
-    def populate(self, item_list):
+    def populate(self, item_list) -> None:
         self.list_store.clear()
         for item in item_list:
             self.list_store.append([item])

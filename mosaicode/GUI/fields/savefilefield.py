@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the SaveFileField class.
@@ -7,6 +7,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mosaicode.GUI.fields.field import Field
+from typing import Any, Dict, List, Optional, Union
 
 
 class SaveFileField(Field):
@@ -17,7 +18,7 @@ class SaveFileField(Field):
     configuration = {"label": "", "value": "", "name": ""}
 
     # --------------------------------------------------------------------------
-    def __init__(self, data, event):
+    def __init__(self, data, event) -> None:
         """
         This method is the constructor.
         """
@@ -29,7 +30,7 @@ class SaveFileField(Field):
         self.create_label()
 
         self.file = self.data["value"]
-        self.parent_window = None
+        self.parent_window: Optional[Any] = None
 
         box = Gtk.HBox()
         self.field = Gtk.Entry()
@@ -57,7 +58,12 @@ class SaveFileField(Field):
         self.dialog.set_action(Gtk.FileChooserAction.SAVE)
         self.dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         self.dialog.add_buttons(Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
-        self.dialog.set_current_folder(self.field.get_text())
+        
+        # Always open in project root directory
+        from pathlib import Path
+        project_root = Path(__file__).parent.parent.parent.parent
+        self.dialog.set_current_folder(str(project_root))
+        
         self.dialog.set_default_response(Gtk.ResponseType.OK)
         self.dialog.set_current_name(self.field.get_text())
 
@@ -67,11 +73,11 @@ class SaveFileField(Field):
         self.dialog.destroy()
 
     # --------------------------------------------------------------------------
-    def get_value(self):
+    def get_value(self) -> Any:
         return self.field.get_text()
 
     # --------------------------------------------------------------------------
-    def set_value(self, value):
+    def set_value(self, value) -> None:
         self.field.set_text(value)
 
 # --------------------------------------------------------------------------

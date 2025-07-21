@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the BlockNotebook class.
@@ -7,6 +7,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mosaicode.GUI.blockstreeview import BlocksTreeView
+from typing import Any, Dict, List, Optional, Union
 
 
 class BlockNotebook(Gtk.Notebook):
@@ -16,7 +17,7 @@ class BlockNotebook(Gtk.Notebook):
     """
 
     # ----------------------------------------------------------------------
-    def __init__(self, main_window):
+    def __init__(self, main_window) -> None:
         """
         This method is the constructor.
 
@@ -24,12 +25,12 @@ class BlockNotebook(Gtk.Notebook):
                 * **main_window** (:class:`MainWindow<mosaicode.GUI.mainwindow>`)
         """
         Gtk.Notebook.__init__(self)
-        self.tabs = []
+        self.tabs: List[Any] = []
         self.main_window = main_window
         self.set_scrollable(True)
 
     # ----------------------------------------------------------------------
-    def update_blocks(self, blocks):
+    def update_blocks(self, blocks) -> None:
         """
         This methods update all blocks loaded for each library.
 
@@ -57,7 +58,7 @@ class BlockNotebook(Gtk.Notebook):
         self.show_all()
 
     # ----------------------------------------------------------------------
-    def search(self, query):
+    def search(self, query) -> None:
         """
         This method search for a block.
 
@@ -68,7 +69,7 @@ class BlockNotebook(Gtk.Notebook):
             blocks_tree_view.search(query)
 
     # ----------------------------------------------------------------------
-    def get_selected_block(self):
+    def get_selected_block(self) -> Any:
         """
         This methods obtain the selected block in current tab.
             :return: selected block.

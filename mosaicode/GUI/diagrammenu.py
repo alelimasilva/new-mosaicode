@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -80,7 +80,10 @@ class DiagramMenu(Gtk.Menu):
 
         """
         comment = DiagramControl(self.diagram).add_comment()
-        comment.move(int(float(self.x)), int(float(self.y)))
+        if comment is not None:
+            # Posicionar o comentário no centro da área visível
+            window_width, window_height = self.diagram.main_window.get_size()
+            comment.move(window_width // 2, window_height // 2)
     # ----------------------------------------------------------------------
     def __delete(self, *args):
         """

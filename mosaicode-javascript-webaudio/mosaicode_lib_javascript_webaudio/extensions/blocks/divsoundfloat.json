@@ -1,0 +1,37 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "divsoundfloat",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": " Div Sound Float",
+  "label": "Div Sound Float",
+  "color": "50:150:250:150",
+  "group": "Sound",
+  "codes": {
+    "function": "\nDivSoundFloat = function(context, float_value) {\n    var that = this;\n    this.float = float_value;\n    this.context = context;\n    this.node = context.createScriptProcessor(1024, 1, 1);\n    this.node.onaudioprocess = function(e) { that.process(e) };\n}\n\nDivSoundFloat.prototype.process = function(e) {\n    var in0 = e.inputBuffer.getChannelData(0);\n    var out = e.outputBuffer.getChannelData(0);\n    for (var i = 0; i < in0.length; ++i) {\n        out[i] = in0[i] / this.float;\n    }\n}\n",
+    "declaration": "\n// block_$id$ = $label$\n\nvar block_$id$_float = 1;\nvar block_$id$_obj = new DivSoundFloat(context, block_$id$_float);\n\nvar $port[float_input]$ = function(value){\n    block_$id$_float = parseFloat(value);\n    block_$id$_obj.float = block_$id$_float;\n    return true;\n    };\n\nvar $port[sound_input]$ = block_$id$_obj.node;\nvar $port[output]$ = block_$id$_obj.node;\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "name": "sound_input",
+      "conn_type": "Input",
+      "label": "Sound"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "float_input",
+      "conn_type": "Input",
+      "label": "Float Value"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Sound",
+      "conn_type": "Output",
+      "name": "output"
+    }
+  ]
+}

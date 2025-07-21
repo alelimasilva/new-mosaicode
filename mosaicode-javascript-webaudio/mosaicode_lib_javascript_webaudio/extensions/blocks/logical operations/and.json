@@ -1,0 +1,38 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "and",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Logical Operation AND",
+  "label": "AND",
+  "color": "249:229:4:150",
+  "group": "Logical Operations",
+  "codes": {
+    "onload": "\n\n",
+    "declaration": "\nvar condition_1$id$ = null;\nvar condition_2$id$ = null;\n\nvar $port[output]$ = [];\n\nfunction and$id$() {\n    var ret = condition_1$id$ && condition_2$id$;    \n    for (var i = 0; i < $port[output]$.length ; i++){\n        $port[output]$[i](ret);\n    }\n    return true;\n}\n\nvar $port[condition_1]$ = function(value){\n    condition_1$id$ = value;\n    and$id$();\n    return true;\n};\n\nvar $port[condition_2]$ = function(value){\n    condition_2$id$ = value;\n    and$id$();\n    return true;\n};\n",
+    "execution": "\n\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.bool",
+      "name": "condition_1",
+      "label": "Condition 1",
+      "conn_type": "Input"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.bool",
+      "name": "condition_2",
+      "label": "Condition 2",
+      "conn_type": "Input"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.bool",
+      "name": "output",
+      "label": "Output",
+      "conn_type": "Output"
+    }
+  ]
+}

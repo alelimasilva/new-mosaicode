@@ -1,0 +1,45 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "check",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Check",
+  "label": "Check",
+  "color": "50:150:250:150",
+  "group": "Form",
+  "codes": {
+    "declaration": "\n// block_$id$ = $label$\nvar $port[value]$ = [];\n\nvar $port[invalue]$ = function(value){\n    if (value)\n    document.getElementById(\"block_$id$\").checked = true;\n    else\n    document.getElementById(\"block_$id$\").checked = false;\n    return true;\n    };\n\n",
+    "execution": "\nfunction change_value$id$(e){\n    value = document.getElementById(\"block_$id$\").checked;\n    for (var i = 0; i < $port[value]$.length ; i++){\n        if (value)\n            $port[value]$[i](1);\n        else\n            $port[value]$[i](0);\n    }\n};\n",
+    "html": "\n<input type=\"checkbox\" onchange=\"change_value$id$(event);\" id=\"block_$id$\"> $prop[label]$ <br>\n"
+  },
+  "properties": [
+    {
+      "name": "value",
+      "label": "Value",
+      "type": "Float",
+      "value": "0"
+    },
+    {
+      "name": "label",
+      "label": "Label",
+      "type": "String",
+      "value": "Label"
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Value",
+      "conn_type": "Output",
+      "name": "value"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Value",
+      "conn_type": "Input",
+      "name": "invalue"
+    }
+  ]
+}

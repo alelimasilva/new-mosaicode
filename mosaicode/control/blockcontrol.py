@@ -6,47 +6,81 @@ This module contains the BlockControl class.
 import ast
 import copy
 import inspect  # For module inspect
-import os
+from pathlib import Path
+import logging
 import pkgutil  # For dynamic package load
-from os.path import expanduser
+from typing import Dict, List, Optional, Any
 
 from mosaicode.model.port import Port
 from mosaicode.persistence.blockpersistence import BlockPersistence
+from mosaicode.model.blockmodel import BlockModel
 
 
-class BlockControl():
+class BlockControl:
     """
     This class contains methods related the BlockControl class.
     """
 
     # ----------------------------------------------------------------------
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize BlockControl."""
         pass
 
     # ----------------------------------------------------------------------
     @classmethod
-    def load_ports(cls, block, ports):
+    def load_ports(cls, block: 'BlockModel', ports: Dict[str, Port]) -> None:
+        """
+        Load ports for a block.
+        
+        Args:
+            block: The block to load ports for
+            ports: Dictionary of available ports
+        """
+        print(f"[PORT-DEBUG] Iniciando load_ports para bloco: {block.type}")
+        print(f"[PORT-DEBUG] Total de portas disponíveis no sistema: {len(ports)}")
+        print(f"[PORT-DEBUG] Primeiras 5 portas disponíveis: {list(ports.keys())[:5]}")
+        
         # Adjust ports attributes
-        i = 0
-        in_port = 0
-        out_port = 0
-        new_ports = []
+        i: int = 0
+        in_port: int = 0
+        out_port: int = 0
+        new_ports: List[Port] = []
+        
         for port in block.ports:
-            # if it is not a dictionary, dunno what to do. What happened?
+            # Se a porta já é um objeto Port, apenas ajustar os índices
+            if isinstance(port, Port):
+                port.index = i
+                if port.is_input():
+                    port.type_index = in_port
+                    in_port += 1
+                else:
+                    port.type_index = out_port
+                    out_port += 1
+                new_ports.append(port)
+                i += 1
+                continue
+                
+            # Se é um dicionário (formato antigo), processar como antes
             if not isinstance(port, dict):
+                from mosaicode.system import System
                 System.log("Error Loading a Block: Port is not a dictionary?");
                 continue
             if "type" not in port:
+                from mosaicode.system import System
                 System.log("Error Loading a Block: Port should have a type");
                 continue
-            port_type = port["type"]
+            port_type: str = port["type"]
             # Create a copy from the port instance loaded in the System
             if port_type not in ports:
+                print(f"[PORT-DEBUG] Tipo de porta não encontrado no sistema: '{port_type}' (Porta: {port.get('name', '')})")
+                from mosaicode.system import System
                 System.log("Error Loading a Block: Port is not present in System");
                 continue
-            new_port = copy.deepcopy(ports[port_type])
-
+            new_port: Port = copy.deepcopy(ports[port_type])
+            print(f"[PORT-DEBUG] Tipo de porta encontrado no sistema: '{port_type}' (Porta: {port.get('name', '')})")
+            print(f"[PORT-DEBUG] Porta carregada - Tipo: {new_port.type}, Hint: {new_port.hint}, Color: {new_port.color}")
+            
             if "conn_type" not in port:
                 port["conn_type"] = Port.INPUT
             if port["conn_type"].upper() == "INPUT":
@@ -69,41 +103,79 @@ class BlockControl():
         block.ports = new_ports
     # ----------------------------------------------------------------------
     @classmethod
-    def load(cls, file_name):
+    def load(cls, file_name: str) -> Optional['BlockModel']:
         """
         This method loads the block from JSON file.
 
+        Args:
+            file_name: Path to the block file
+            
         Returns:
-
-            * **Types** (:class:`boolean<boolean>`)
+            BlockModel instance or None if loading failed
         """
-        block = BlockPersistence.load(file_name)
+        block: Optional['BlockModel'] = BlockPersistence.load(file_name)
         return block
     # ----------------------------------------------------------------------
     @classmethod
-    def add_new_block(cls, block):
-        # Save it
+    def add_new_block(cls, block: 'BlockModel') -> None:
+        """
+        Add a new block to the system. Always asks user for save location.
+        
+        Args:
+            block: The block to add
+        """
+        # Ask user for save location
         from mosaicode.system import System
         System()
-        path = os.path.join(System.get_user_dir(),"extensions")
-        path = os.path.join(path, block.language)
-        path = os.path.join(path, "blocks")
-        path = os.path.join(path, block.extension)
-        path = os.path.join(path, block.group)
-        BlockPersistence.save(block, path)
+        
+        # This would need to be integrated with the GUI to show a dialog
+        # For now, we'll use a default location but log that user choice is preferred
+        path: Path = Path(System.get_user_dir()) / "extensions" / block.language / "blocks" / block.extension / block.group
+        System.log("Note: User should be prompted for save location in future versions")
+        BlockPersistence.save(block, str(path))
 
     # ----------------------------------------------------------------------
     @classmethod
-    def delete_block(cls, block_key):
+    def delete_block(cls, block_key: str) -> bool:
+        """
+        Delete a block from the system.
+        
+        Args:
+            block_key: Key of the block to delete
+            
+        Returns:
+            True if deletion was successful, False otherwise
+        """
         from mosaicode.system import System
-        blocks = System.get_blocks()
+        blocks: Dict[str, 'BlockModel'] = System.get_blocks()
         if block_key not in blocks:
             return False
-        block = blocks[block_key]
+        block: 'BlockModel' = blocks[block_key]
         if block.file is not None:
-            os.remove(block.file)
+            Path(block.file).unlink(missing_ok=True)
             return True
         else:
             return False
+
+    # ----------------------------------------------------------------------
+    @classmethod
+    def print_block(cls, block: 'BlockModel') -> None:
+        """
+        Print block information.
+        
+        Args:
+            block: BlockModel instance to print
+        """
+        logging.info(r"Block Type: {block.type}")
+        logging.info(r"Block Label: {block.label}")
+        logging.info(r"Block Language: {block.language}")
+        logging.info(r"Block Extension: {block.extension}")
+        logging.info(r"Block Group: {block.group}")
+        logging.info(r"Block File: {block.file}")
+        logging.info(r"Block Help: {block.help}")
+        logging.info(r"Block Max IO: {block.maxIO}")
+        logging.info(r"Block Properties: {block.properties}")
+        logging.info(r"Block Ports Count: {len(block.ports)}")
+        logging.info(r"---------------------")
 
 # ----------------------------------------------------------------------

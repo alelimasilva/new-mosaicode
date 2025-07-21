@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the BlocksTreeView class.
@@ -9,7 +9,11 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gtk, Gdk, GdkPixbuf
 import gettext
+import logging
+from typing import Any, Dict, List, Optional, Union
 _ = gettext.gettext
+
+logger = logging.getLogger(__name__)
 
 
 class BlocksTreeView(Gtk.ScrolledWindow):
@@ -17,13 +21,13 @@ class BlocksTreeView(Gtk.ScrolledWindow):
     This class contains the methods related to BlocksTreeView class.
     """
 
-    def __init__(self, main_window, language, blocks):
+    def __init__(self, main_window, language, blocks) -> None:
         """
         This method is the constructor.
         """
         Gtk.ScrolledWindow.__init__(self)
         self.main_window = main_window
-        self.current_filter = None
+        self.current_filter: Optional[Any] = None
 
         self.tree_store = Gtk.TreeStore(str, str, str, str, object)
         self.filter = self.tree_store.filter_new()
@@ -69,6 +73,9 @@ class BlocksTreeView(Gtk.ScrolledWindow):
             if blocks[x].group not in group_list:
                 group_list.append(blocks[x].group)
 
+        logger.debug(f"Rendering blocks for language: {language}")
+        logger.debug(f"Found {len(block_list)} blocks in {len(group_list)} groups")
+
         # Sorting groups
         for group in sorted(group_list):
             self.__append_category(group)
@@ -87,9 +94,16 @@ class BlocksTreeView(Gtk.ScrolledWindow):
 
         """
         category = self.__contains_category(block.group)
+        
+        # Ensure we have a valid label
+        display_label = block.label if block.label and block.label != "A" else block.type
+        first_letter = display_label[0].upper() if display_label else "B"
+        
+        logger.debug(f"Adding block: {block.type} with label: '{block.label}' -> display: '{display_label}'")
+        
         self.tree_store.append(category,
-                        [block.label.title()[0],
-                        block.label,
+                        [first_letter,
+                        display_label,
                         "white",
                         block.get_color_as_rgba(),
                         block
@@ -112,7 +126,7 @@ class BlocksTreeView(Gtk.ScrolledWindow):
             if category_name in self.tree_store[iter][:]:
                 return iter
             iter = self.tree_store.iter_next(iter)
-        return __append_category(category_name)
+        return self.__append_category(category_name)
 
     # ----------------------------------------------------------------------
     def __filter_func(self, model, iter, data):
@@ -134,6 +148,7 @@ class BlocksTreeView(Gtk.ScrolledWindow):
         """
         This method monitors if tree selection was changed.
         """
+        logging.debug(r"BlocksTreeView.__on_tree_selection_changed chamado")
         treeViewSelection = self.blocks_tree_view.get_selection()
         (tree_view_model, iter) = treeViewSelection.get_selected()
 
@@ -142,11 +157,12 @@ class BlocksTreeView(Gtk.ScrolledWindow):
             return
 
         block = self.get_selected_block()
+        logging.debug(r"Bloco selecionado na árvore: {getattr(block, 'label', None)}")
         if block is not None:
             self.main_window.main_control.set_block(self.get_selected_block())
 
     # ----------------------------------------------------------------------
-    def search(self, key):
+    def search(self, key) -> None:
         """
         This method search the key in blocks_tree_view.
 
@@ -173,7 +189,7 @@ class BlocksTreeView(Gtk.ScrolledWindow):
             selection.set_text(block.label, -1)
 
     # ----------------------------------------------------------------------
-    def get_selected_block(self):
+    def get_selected_block(self) -> Any:
         """
         This method get the block selected.
 

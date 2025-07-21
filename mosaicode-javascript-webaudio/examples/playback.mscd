@@ -1,0 +1,45 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.playback",
+      "id": 1,
+      "collapsed": false,
+      "x": 180.0,
+      "y": 110.0,
+      "properties": [
+        {
+          "key": "loop",
+          "value": "False"
+        },
+        {
+          "key": "label",
+          "value": "Playback"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.speaker",
+      "id": 2,
+      "collapsed": false,
+      "x": 440.0,
+      "y": 220.0,
+      "properties": []
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 1,
+      "from_out": 0,
+      "to_block": 2,
+      "to_in": 0
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

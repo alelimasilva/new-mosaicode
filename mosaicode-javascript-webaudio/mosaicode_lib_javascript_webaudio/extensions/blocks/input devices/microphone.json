@@ -1,0 +1,25 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "microphone",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Microphone",
+  "label": "Microphone",
+  "color": "150:150:250:150",
+  "group": "Input Device",
+  "codes": {
+    "declaration": "\n</script>\n<div>\n    <span class=\"title\">Microphone</span>\n</div>\n<div>\n    <div>\n        <span class=\"label\">Gain</span>\n        <input type=\"range\" id=\"gain-slider_$id$\" class=\"slider\" min=\"-20\" max=\"20\" step=\"1\" value=\"0\" />\n        <span id=\"gain-display_$id$\" class=\"label\">0 db</span>\n    </div>\n</div>\n\n<script>\n    var gain = 0;\n    var audioSource;\n    var block_$id$;\n\n    block_$id$  = context.createBiquadFilter();\n    block_$id$.type = \"lowshelf\";\n    block_$id$.frequency.value = 1000;\n\n    var $port[output]$ = block_$id$;\n\n    navigator.getUserMedia =\n        navigator.getUserMedia ||\n        navigator.webkitGetUserMedia ||\n        navigator.mozGetUserMedia ||\n        navigator.msGetUserMedia;\n\nif (navigator.getUserMedia) {\n    navigator.getUserMedia (\n      {\n        audio: true,\n        video: false\n      },\n      function (stream) {\n        audioSource = context.createMediaStreamSource(stream);\n\n         var gainDisplay = document.getElementById('gain-display_$id$');\n         var gainSlider = document.getElementById('gain-slider_$id$');\n\n         gainSlider.addEventListener('input', function () {\n           gain = parseFloat(gainSlider.value)\n           gainDisplay.textContent = gain + ' db';\n           block_$id$.gain.value = gainSlider.value;\n         });\n\n         audioSource.connect(block_$id$);\n      },\n      function (err) {\n         console.log('Error initializing user media stream: ' + err);\n      }\n    );\n}\n",
+    "onload": "\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Output",
+      "conn_type": "Output",
+      "name": "output"
+    }
+  ]
+}

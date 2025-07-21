@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the FloatField class.
@@ -7,6 +7,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mosaicode.GUI.fields.field import Field
+from typing import Dict, List, Optional, Any, Union
 
 
 class FloatField(Field):
@@ -42,7 +43,7 @@ class FloatField(Field):
 
         try:
             value = float(self.data["value"])
-        except:
+        except (ValueError, TypeError) as e:
             pass
 
         adjustment = Gtk.Adjustment(value=value,

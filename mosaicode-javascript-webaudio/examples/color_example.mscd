@@ -1,0 +1,67 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.input devices.mouseposition",
+      "id": 1,
+      "collapsed": false,
+      "x": 170.0,
+      "y": 150.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.background",
+      "id": 2,
+      "collapsed": false,
+      "x": 560.0,
+      "y": 140.0,
+      "properties": [
+        {
+          "key": "color",
+          "value": "#F00"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.conversion.rgb",
+      "id": 3,
+      "collapsed": false,
+      "x": 380.0,
+      "y": 130.0,
+      "properties": []
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 1,
+      "from_out": 0,
+      "to_block": 3,
+      "to_in": 0
+    },
+    {
+      "from_block": 1,
+      "from_out": 1,
+      "to_block": 3,
+      "to_in": 1
+    },
+    {
+      "from_block": 1,
+      "from_out": 1,
+      "to_block": 3,
+      "to_in": 2
+    },
+    {
+      "from_block": 3,
+      "from_out": 3,
+      "to_block": 2,
+      "to_in": 0
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

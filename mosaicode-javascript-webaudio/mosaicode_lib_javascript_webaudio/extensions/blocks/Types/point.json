@@ -1,0 +1,62 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "point",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "",
+  "label": "Point",
+  "color": "150:50:150:150",
+  "group": "Types",
+  "codes": {
+    "onload": "\nload_point$id$();\n        ",
+    "declaration": "\nvar $port[point_value]$ = [];\n\nblock_$id$_x = $prop[x]$;\nblock_$id$_y = $prop[y]$;\nblock_$id$_z = $prop[z]$;\n\nvar $port[x]$ = function(value){\n    block_$id$_x = parseFloat(value);\n    load_point$id$();\n    return true;\n    };\n\nvar $port[y]$ = function(value){\n    block_$id$_y = parseFloat(value);\n    load_point$id$();\n    return true;\n    }\n\nvar $port[z]$ = function(value){\n    block_$id$_z = parseFloat(value);\n    load_point$id$();\n    return true;\n    }\n\nfunction load_point$id$(){\n    for (var i = 0 ; i < $port[point_value]$.length ; i++)\n        $port[point_value]$[i]([block_$id$_x, block_$id$_y, block_$id$_z]);\n};\n\n"
+  },
+  "properties": [
+    {
+      "name": "x",
+      "label": "X",
+      "value": "0",
+      "type": "Float"
+    },
+    {
+      "name": "y",
+      "label": "Y",
+      "value": "0",
+      "type": "Float"
+    },
+    {
+      "name": "z",
+      "label": "Z",
+      "value": "0",
+      "type": "Float"
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "x",
+      "conn_type": "Input",
+      "label": "X"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "y",
+      "conn_type": "Input",
+      "label": "Y"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "z",
+      "conn_type": "Input",
+      "label": "Z"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.point",
+      "conn_type": "Output",
+      "name": "point_value",
+      "label": "Point Value"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the CheckField class.
@@ -7,6 +7,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mosaicode.GUI.fields.field import Field
+from typing import Any, Dict, List, Optional, Union
 
 
 class CheckField(Field):
@@ -17,7 +18,7 @@ class CheckField(Field):
 
     configuration = {"label": "", "value": False, "name": ""}
 
-    def __init__(self, data, event):
+    def __init__(self, data, event) -> None:
         """
         This method is the constructor.
         """
@@ -47,14 +48,14 @@ class CheckField(Field):
         self.show_all()
 
     # ------------------------------------------------------------------------------
-    def get_value(self):
+    def get_value(self) -> Any:
         """
         This method get the value.
         """
         return self.field.get_active()
 
     # ------------------------------------------------------------------------------
-    def set_value(self, value):
+    def set_value(self, value) -> None:
         """
         This method set the value.
         """

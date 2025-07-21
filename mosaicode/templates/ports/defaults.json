@@ -1,0 +1,32 @@
+{
+  "default_values": {
+    "type": "",
+    "version": "0.0.1",
+    "language": "",
+    "hint": "",
+    "color": "#000",
+    "multiple": false,
+    "file": null,
+    "code": "",
+    "var_name": "$block[label]$_$block[id]$_$port[name]$",
+    "conn_type": null,
+    "name": null,
+    "label": null,
+    "index": -1,
+    "type_index": -1
+  },
+  "connection_types": {
+    "input": "input",
+    "output": "output"
+  },
+  "color_formats": {
+    "default": "#000",
+    "input": "#00FF00",
+    "output": "#FF0000"
+  },
+  "variable_patterns": {
+    "default": "$block[label]$_$block[id]$_$port[name]$",
+    "simple": "$block[id]$_$port[name]$",
+    "named": "$block[label]$_$port[name]$"
+  }
+} 

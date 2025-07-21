@@ -7,6 +7,7 @@ import os
 import gi
 import json
 from copy import deepcopy
+from pathlib import Path
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk
 from datetime import datetime
@@ -15,6 +16,7 @@ from mosaicode.model.connectionmodel import ConnectionModel
 from mosaicode.model.commentmodel import CommentModel
 from mosaicode.model.authormodel import AuthorModel
 from mosaicode.model.diagrammodel import DiagramModel
+from mosaicode.control.blockcontrol import BlockControl
 
 class DiagramPersistence():
     """
@@ -29,7 +31,7 @@ class DiagramPersistence():
             :param diagram: diagram to load.
             :return: operation status (True or False)
         """
-        if os.path.exists(diagram.file_name) is False:
+        if not Path(diagram.file_name).exists():
             System.log("Problem loading the diagram. File does not exist.")
             return None
 
@@ -77,6 +79,7 @@ class DiagramPersistence():
             if "blocks" in data:        
                 blocks = data["blocks"]
                 system_blocks = System.get_blocks()
+                system_ports = System.get_ports()
                 for block in blocks:
                     block_type = block["type"]
                     if block_type not in system_blocks:
@@ -96,6 +99,10 @@ class DiagramPersistence():
                     new_block.x = float(x)
                     new_block.y = float(y)
                     new_block.is_collapsed = collapsed
+                    
+                    # Garantir que as portas sejam indexadas corretamente
+                    BlockControl.load_ports(new_block, system_ports)
+                    
                     dc.add_block(new_block)
 
             # Loading connections
@@ -123,7 +130,7 @@ class DiagramPersistence():
                         System.log("Diagram error: invalid input port index " + str(port_index))
                         continue
                 except Exception as e:
-                    System.log("Diagram error:" + str(e))
+                    pass
                     continue
                 connection = ConnectionModel(diagram,
                                     from_block,
@@ -158,7 +165,7 @@ class DiagramPersistence():
 
 
         except Exception as e:
-            System.log(e)
+            pass
             return False
 
         return True
@@ -260,9 +267,10 @@ class DiagramPersistence():
             save_file = open(str(diagram.file_name), "w")
             save_file.write(json.dumps(x, indent=4))
             save_file.close()
+        except Exception as e:
+            pass
         except IOError as e:
-            System.log(e.strerror)
-            return False, e.strerror
+            pass
 
         diagram.set_modified(False)
         return True, "Success"

@@ -4,9 +4,9 @@
 This module contains the CodeTemplateControl class.
 """
 import inspect  # For module inspect
-import os
+from pathlib import Path
+import logging
 import pkgutil  # For dynamic package load
-from os.path import expanduser
 
 from mosaicode.model.codetemplate import CodeTemplate
 from mosaicode.persistence.codetemplatepersistence import CodeTemplatePersistence
@@ -33,9 +33,10 @@ class CodeTemplateControl():
         # save it
         from mosaicode.system import System as System
         System()
-        path = os.path.join(System.get_user_dir(), "extensions")
-        path = os.path.join(path, code_template.language)
-        path = os.path.join(path, "codetemplates")
+        # This would need to be integrated with the GUI to show a dialog
+        # For now, we'll use a default location but log that user choice is preferred
+        path = Path(System.get_user_dir()) / "extensions" / code_template.language / "codetemplates"
+        System.log("Note: User should be prompted for save location in future versions")
         CodeTemplatePersistence.save(code_template, path)
 
     # ----------------------------------------------------------------------
@@ -48,9 +49,27 @@ class CodeTemplateControl():
             return False
         code_template = code_templates[code_template_key]
         if code_template.file is not None:
-            os.remove(code_template.file)
+            Path(code_template.file).unlink(missing_ok=True)
         else:
             System.log("Error: This code template does not have a file.")            
         return code_template.file
+
+    # ----------------------------------------------------------------------
+    @classmethod
+    def print_template(cls, code_template):
+        """
+        Print code template information.
+        
+        Args:
+            code_template: CodeTemplate instance to print
+        """
+        logging.info(r"Code Template Type: {code_template.type}")
+        logging.info(r"Code Template Label: {code_template.label}")
+        logging.info(r"Code Template Language: {code_template.language}")
+        logging.info(r"Code Template Extension: {code_template.extension}")
+        logging.info(r"Code Template File: {code_template.file}")
+        logging.info(r"Code Template Help: {code_template.help}")
+        logging.info(r"Code Template Code: {code_template.code}")
+        logging.info(r"---------------------")
 
 # ----------------------------------------------------------------------

@@ -1,18 +1,12 @@
 import os
 import tempfile
+from pathlib import Path
 
 
-def get_absolute_path_from_file(filename):
-    """Gets the absolute path from received file.
-
-        :param filename: file to obtain the absolute path.
-        :return: absolute path from file.
-    """
-    directory = os.path.dirname(os.path.realpath('__file__'))
-    filename = os.path.join(directory, filename)
-    filename = os.path.abspath(os.path.realpath(filename))
-
-    return filename
+def get_file_path(filename):
+    directory = Path(__file__).resolve().parent
+    file_path = directory / filename
+    return str(file_path.resolve())
 
 
 def get_temp_file():
@@ -22,4 +16,17 @@ def get_temp_file():
     """
     with tempfile.NamedTemporaryFile() as file:
         return file.name
+
+
+def get_absolute_path_from_file(file_path):
+    """
+    Get absolute path from a file path.
+    
+    Args:
+        file_path: Relative or absolute file path
+        
+    Returns:
+        Absolute path as string
+    """
+    return str(Path(file_path).resolve())
 

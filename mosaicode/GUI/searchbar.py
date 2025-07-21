@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This modules contains the SearchBar class.
@@ -6,6 +6,7 @@ This modules contains the SearchBar class.
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from typing import Any, Dict, List, Optional, Union
 
 
 class SearchBar(Gtk.Box, Gtk.SearchBar):
@@ -15,7 +16,7 @@ class SearchBar(Gtk.Box, Gtk.SearchBar):
 
     # ----------------------------------------------------------------------
 
-    def __init__(self, main_window):
+    def __init__(self, main_window) -> None:
         super(SearchBar, self).__init__()
 
         self.main_window = main_window

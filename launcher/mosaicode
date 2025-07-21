@@ -1,6 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+import logging
+
+# Configuração de logging para toda a aplicação - APENAS ARQUIVO, SEM TERMINAL
+log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'mosaicode.log')
+
+# Configurar logging para arquivo apenas, sem stdout/stderr
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s: %(message)s',
+    filename=log_path,
+    filemode='w',  # sobrescreve a cada execução
+    force=True  # força a configuração mesmo se já configurado
+)
+
+# Desabilitar completamente logs no terminal
+root_logger = logging.getLogger()
+root_logger.handlers = []  # Remove todos os handlers existentes
+
+# Adicionar apenas handler de arquivo
+file_handler = logging.FileHandler(log_path, mode='w')
+file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+root_logger.addHandler(file_handler)
+root_logger.setLevel(logging.INFO)
+
+# Desabilitar propagação para evitar logs duplicados
+root_logger.propagate = False
+
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -49,21 +77,21 @@ def main(argv):
         # This method is used by the launcher class
         ports = System.get_ports()
         for port in ports:
-            print("--------------------- ")
+            logging.info("--------------------- ")
             PortControl.print_port(ports[port])
         return
 
     if args.print_blockmodels:
         blocks = System.get_blocks()
         for block in blocks:
-            print("--------------------- ")
+            logging.info("--------------------- ")
             BlockControl.print_block(blocks[block])
         return
 
     if args.print_templates:
         code_templates = System.get_code_templates()
         for template in code_templates:
-            print("--------------------- ")
+            logging.info("--------------------- ")
             CodeTemplateControl.print_template(code_templates[template])
         return
 

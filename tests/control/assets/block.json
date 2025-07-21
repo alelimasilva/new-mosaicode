@@ -1,0 +1,102 @@
+{
+  "id": -1,
+  "version": "0.0.1",
+  "x": 0,
+  "y": 0,
+  "is_collapsed": false,
+  "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.filter",
+  "language": "javascript",
+  "extension": "",
+  "file": null,
+  "help": "",
+  "label": "Filter",
+  "color": "#32963296",
+  "group": "Sound",
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Sound",
+      "conn_type": "INPUT",
+      "name": "sound_input",
+      "index": 0
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Frequency",
+      "conn_type": "INPUT",
+      "name": "osc_freq",
+      "index": 1
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Frequency",
+      "conn_type": "INPUT",
+      "name": "freq",
+      "index": 2
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Gain",
+      "conn_type": "INPUT",
+      "name": "gain",
+      "index": 3
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Q",
+      "conn_type": "INPUT",
+      "name": "q",
+      "index": 4
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Sound",
+      "conn_type": "OUTPUT",
+      "name": "output",
+      "index": 5
+    }
+  ],
+  "maxIO": 6,
+  "properties": [
+    {
+      "name": "type",
+      "label": "Type",
+      "value": "highpass",
+      "type": "Combo",
+      "values": ["allpass", "bandpass", "highshelf", "highpass", "lowpass", "lowshelf", "notch", "peaking"]
+    },
+    {
+      "name": "freq",
+      "label": "Frequency",
+      "value": 200,
+      "type": "Float",
+      "lower": 0,
+      "upper": 48000,
+      "step": 1
+    },
+    {
+      "name": "gain",
+      "label": "Gain",
+      "value": 1,
+      "type": "Float",
+      "lower": 0,
+      "upper": 100,
+      "step": 0.1
+    },
+    {
+      "name": "Q",
+      "label": "Q",
+      "value": 200,
+      "type": "Float",
+      "lower": 0,
+      "upper": 48000,
+      "step": 1
+    }
+  ],
+  "codes": {
+    "declaration": "\n\n// block_$id$ = $label$\nvar block_$id$ = context.createBiquadFilter();\nvar $port[osc_freq]$ = block_$id$.frequency;\nblock_$id$.type = '$prop[type]$';\nblock_$id$.frequency.value = '$prop[freq]$';\nblock_$id$.gain.value = $prop[gain]$;\nblock_$id$.Q.value = $prop[Q]$;\n\nvar $port[freq]$ = function(value){\n    block_$id$.frequency.value = parseFloat(value);\n    return true;\n    };\n\nvar $port[q]$ = function(value){\n    block_$id$.Q.value = parseFloat(value);\n    return true;\n    };\n\nvar $port[gain]$ = function(value){\n    block_$id$.gain.value = parseFloat(value);\n    return true;\n    };\n\nvar $port[sound_input]$ = block_$id$;\nvar $port[output]$ = block_$id$;\n"
+  },
+  "gen_codes": {},
+  "weight": 0,
+  "connections": []
+} 

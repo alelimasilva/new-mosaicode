@@ -1,0 +1,180 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.speaker",
+      "id": 1,
+      "collapsed": false,
+      "x": 740.0,
+      "y": 110.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.oscillator",
+      "id": 2,
+      "collapsed": false,
+      "x": 310.0,
+      "y": 140.0,
+      "properties": [
+        {
+          "key": "freq",
+          "value": "440"
+        },
+        {
+          "key": "type",
+          "value": "sine"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.oscillator",
+      "id": 3,
+      "collapsed": false,
+      "x": 420.0,
+      "y": 230.0,
+      "properties": [
+        {
+          "key": "freq",
+          "value": "440"
+        },
+        {
+          "key": "type",
+          "value": "sine"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.input devices.mouseposition",
+      "id": 4,
+      "collapsed": false,
+      "x": 40.0,
+      "y": 110.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.addsound",
+      "id": 6,
+      "collapsed": false,
+      "x": 580.0,
+      "y": 180.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.arithmetics.multiplyfloat",
+      "id": 7,
+      "collapsed": false,
+      "x": 230.0,
+      "y": 250.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.form.range",
+      "id": 8,
+      "collapsed": false,
+      "x": 50.0,
+      "y": 270.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "2.0"
+        },
+        {
+          "key": "label",
+          "value": "Multiply"
+        },
+        {
+          "key": "min",
+          "value": "0.0"
+        },
+        {
+          "key": "max",
+          "value": "100.0"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.GUI.print",
+      "id": 9,
+      "collapsed": false,
+      "x": 280.0,
+      "y": 360.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "Label"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.GUI.spectrogram",
+      "id": 10,
+      "collapsed": false,
+      "x": 740.0,
+      "y": 260.0,
+      "properties": []
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 4,
+      "from_out": 0,
+      "to_block": 2,
+      "to_in": 1
+    },
+    {
+      "from_block": 2,
+      "from_out": 3,
+      "to_block": 6,
+      "to_in": 0
+    },
+    {
+      "from_block": 6,
+      "from_out": 2,
+      "to_block": 1,
+      "to_in": 0
+    },
+    {
+      "from_block": 3,
+      "from_out": 3,
+      "to_block": 6,
+      "to_in": 1
+    },
+    {
+      "from_block": 4,
+      "from_out": 0,
+      "to_block": 7,
+      "to_in": 0
+    },
+    {
+      "from_block": 7,
+      "from_out": 2,
+      "to_block": 3,
+      "to_in": 1
+    },
+    {
+      "from_block": 8,
+      "from_out": 0,
+      "to_block": 7,
+      "to_in": 1
+    },
+    {
+      "from_block": 8,
+      "from_out": 0,
+      "to_block": 9,
+      "to_in": 0
+    },
+    {
+      "from_block": 6,
+      "from_out": 2,
+      "to_block": 10,
+      "to_in": 0
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

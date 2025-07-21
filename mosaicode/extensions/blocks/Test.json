@@ -1,0 +1,48 @@
+{
+    "source": "JSON",
+    "data": "BLOCK",
+    "version": "0.0.1",
+    "type": "Test",
+    "language": "Test",
+    "extension": "Test",
+    "help": "Test",
+    "label": "Test",
+    "color": "#C8C819",
+    "group": "Test",
+    "codes": [
+        {
+            "name": "code0",
+            "code": "Test"
+        },
+        {
+            "name": "Code1",
+            "code": "Test"
+        },
+        {
+            "name": "Code2",
+            "code": "Test"
+        }
+    ],
+    "properties": [
+        {
+            "name": "test",
+            "label": "Test",
+            "value": "0",
+            "type": "Float"
+        }
+    ],
+    "ports": [
+        {
+            "conn_type": "output",
+            "name": "Test0",
+            "label": "Test0",
+            "type": "Test"
+        },
+        {
+            "conn_type": "input",
+            "name": "Test1",
+            "label": "Test1",
+            "type": "Test"
+        }
+    ]
+}

@@ -8,6 +8,7 @@ import gettext
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+import logging
 
 
 class CodeGenerator():
@@ -115,11 +116,16 @@ class CodeGenerator():
         This method generate the block code.
         """
 
+        logger = logging.getLogger("mosaicode.mosaicode.control.codegenerator")
+        logger.debug(f"[DEBUG] __generate_block_code - bloco id={getattr(block, 'id', None)}, type={getattr(block, 'type', type(block))}, label={getattr(block, 'label', None)}")
+        logger.debug(f"[DEBUG] __generate_block_code - block.codes keys: {list(block.codes.keys()) if hasattr(block, 'codes') else 'N/A'}")
+
         # Empty the previous generated codes, if exist
         block.gen_codes = {}
 
         # For each code part, we need to replace wildcards
         for key in block.codes:
+            logger.debug(f"[DEBUG] __generate_block_code - processando code part: {key}")
             block.gen_codes[key] = block.codes[key]
 
             # First we replace in ports
@@ -150,15 +156,23 @@ class CodeGenerator():
             else:
                 self.__codes[key].append('')
 
+        # LOGS DE DEPURAÇÃO PARA CONEXÕES
+        print(f"[CODEGEN-DEBUG] Bloco {block.type} possui {len(block.connections)} conexões de saída.")
+        for connection in block.connections:
+            print(f"[CODEGEN-DEBUG] Conexão: {getattr(connection.output_port, 'name', None)} -> {getattr(connection.input_port, 'name', None)}")
+            print(f"[CODEGEN-DEBUG] Código da porta: {getattr(connection.output_port, 'code', None)}")
+
         connections = ""
         for connection in block.connections:
-            connection_code = connection.output_port.code
+            connection_code = getattr(connection.output_port, 'code', None)
+            if connection_code is None:
+                logger.error(f"Porta de saída da conexão não possui atributo 'code': {connection.output_port}")
+                continue
             # Replace output
             value = self.__generate_port_var_name_code(
                 connection.output, connection.output_port)
             connection_code = connection_code.replace("$output$", value)
-
-            # Replace Input
+            # Replace input
             value = self.__generate_port_var_name_code(
                 connection.input, connection.input_port)
             connection_code = connection_code.replace("$input$", value)
@@ -238,8 +252,11 @@ class CodeGenerator():
         """
         This method generate the source code.
         """
-
         System.log("Generating Code")
+        logger = logging.getLogger("mosaicode.mosaicode.control.codegenerator")
+        logger.debug(f"[DEBUG] generate_code - diagrama tem {len(self.__diagram.blocks)} blocos.")
+        for k, v in self.__diagram.blocks.items():
+            logger.debug(f"[DEBUG] generate_code - bloco id={getattr(v, 'id', k)}, type={getattr(v, 'type', type(v))}, label={getattr(v, 'label', None)}")
 
         self.__prepare_block_list()
         self.__sort_block_list()

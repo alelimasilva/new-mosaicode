@@ -1,0 +1,56 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.select",
+      "id": 1,
+      "collapsed": false,
+      "x": 90.0,
+      "y": 120.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "wave type"
+        },
+        {
+          "key": "values",
+          "value": "sine,sawtooth,triangle,square"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.print",
+      "id": 2,
+      "collapsed": false,
+      "x": 290.0,
+      "y": 40.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "Str"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 1,
+      "from_out": 2,
+      "to_block": 2,
+      "to_in": 1
+    },
+    {
+      "from_block": 1,
+      "from_out": 1,
+      "to_block": 2,
+      "to_in": 4
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

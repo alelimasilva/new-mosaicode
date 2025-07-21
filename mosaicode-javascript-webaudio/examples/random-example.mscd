@@ -1,0 +1,234 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.form.button",
+      "id": 1,
+      "collapsed": false,
+      "x": 20.0,
+      "y": 0.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "1.0"
+        },
+        {
+          "key": "label",
+          "value": "Start"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.random",
+      "id": 2,
+      "collapsed": false,
+      "x": 530.0,
+      "y": 90.0,
+      "properties": [
+        {
+          "key": "min",
+          "value": "50.0"
+        },
+        {
+          "key": "max",
+          "value": "100.0"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.beat",
+      "id": 3,
+      "collapsed": false,
+      "x": 260.0,
+      "y": 30.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "5.0"
+        },
+        {
+          "key": "time",
+          "value": "500.0"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.form.button",
+      "id": 4,
+      "collapsed": false,
+      "x": 20.0,
+      "y": 80.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "1.0"
+        },
+        {
+          "key": "label",
+          "value": "Stop"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.GUI.print",
+      "id": 5,
+      "collapsed": false,
+      "x": 700.0,
+      "y": 50.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "Label"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.MIDI.midi2freq",
+      "id": 6,
+      "collapsed": false,
+      "x": 700.0,
+      "y": 180.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.oscillator",
+      "id": 7,
+      "collapsed": false,
+      "x": 280.0,
+      "y": 310.0,
+      "properties": [
+        {
+          "key": "freq",
+          "value": "440"
+        },
+        {
+          "key": "type",
+          "value": "sine"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.adsr",
+      "id": 9,
+      "collapsed": false,
+      "x": 490.0,
+      "y": 310.0,
+      "properties": [
+        {
+          "key": "a",
+          "value": "50.0"
+        },
+        {
+          "key": "d",
+          "value": "2.0"
+        },
+        {
+          "key": "s",
+          "value": "100.0"
+        },
+        {
+          "key": "r",
+          "value": "50.0"
+        },
+        {
+          "key": "g",
+          "value": "0.5"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.speaker",
+      "id": 10,
+      "collapsed": false,
+      "x": 700.0,
+      "y": 310.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.GUI.sinewave",
+      "id": 12,
+      "collapsed": false,
+      "x": 700.0,
+      "y": 400.0,
+      "properties": [
+        {
+          "key": "width",
+          "value": "640"
+        },
+        {
+          "key": "height",
+          "value": "240"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 1,
+      "from_out": 1,
+      "to_block": 3,
+      "to_in": 2
+    },
+    {
+      "from_block": 3,
+      "from_out": 1,
+      "to_block": 2,
+      "to_in": 2
+    },
+    {
+      "from_block": 4,
+      "from_out": 1,
+      "to_block": 3,
+      "to_in": 3
+    },
+    {
+      "from_block": 2,
+      "from_out": 1,
+      "to_block": 5,
+      "to_in": 1
+    },
+    {
+      "from_block": 2,
+      "from_out": 1,
+      "to_block": 6,
+      "to_in": 1
+    },
+    {
+      "from_block": 6,
+      "from_out": 2,
+      "to_block": 7,
+      "to_in": 2
+    },
+    {
+      "from_block": 9,
+      "from_out": 3,
+      "to_block": 10,
+      "to_in": 1
+    },
+    {
+      "from_block": 7,
+      "from_out": 4,
+      "to_block": 9,
+      "to_in": 1
+    },
+    {
+      "from_block": 3,
+      "from_out": 1,
+      "to_block": 9,
+      "to_in": 2
+    },
+    {
+      "from_block": 9,
+      "from_out": 3,
+      "to_block": 12,
+      "to_in": 1
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

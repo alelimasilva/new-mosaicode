@@ -1,0 +1,124 @@
+{
+    "source": "JSON",
+    "data": "DIAGRAM",
+    "version": "0.0.1",
+    "zoom": 1.0,
+    "language": "javascript",
+    "code_template": {},
+    "blocks": [
+        {
+            "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.GUI.sinewave",
+            "id": 1,
+            "collapsed": false,
+            "x": 540.0,
+            "y": 120.0,
+            "properties": [
+                {
+                    "key": "width",
+                    "value": "640"
+                },
+                {
+                    "key": "height",
+                    "value": "240"
+                }
+            ]
+        },
+        {
+            "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.oscillator",
+            "id": 2,
+            "collapsed": false,
+            "x": 252.0,
+            "y": 24.0,
+            "properties": [
+                {
+                    "key": "freq",
+                    "value": "440"
+                },
+                {
+                    "key": "type",
+                    "value": "sine"
+                }
+            ]
+        },
+        {
+            "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.speaker",
+            "id": 3,
+            "collapsed": false,
+            "x": 540.0,
+            "y": 24.0,
+            "properties": []
+        },
+        {
+            "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.form.range",
+            "id": 4,
+            "collapsed": false,
+            "x": 12.0,
+            "y": 24.0,
+            "properties": [
+                {
+                    "key": "value",
+                    "value": "200.0"
+                },
+                {
+                    "key": "label",
+                    "value": "Freq"
+                },
+                {
+                    "key": "min",
+                    "value": "200.0"
+                },
+                {
+                    "key": "max",
+                    "value": "2000.0"
+                }
+            ]
+        },
+        {
+            "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.GUI.print",
+            "id": 5,
+            "collapsed": false,
+            "x": 240.0,
+            "y": 192.0,
+            "properties": [
+                {
+                    "key": "label",
+                    "value": "Freq"
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "from_block": 2,
+            "from_out": 3,
+            "to_block": 1,
+            "to_in": 0
+        },
+        {
+            "from_block": 2,
+            "from_out": 3,
+            "to_block": 3,
+            "to_in": 0
+        },
+        {
+            "from_block": 4,
+            "from_out": 0,
+            "to_block": 2,
+            "to_in": 1
+        },
+        {
+            "from_block": 4,
+            "from_out": 0,
+            "to_block": 5,
+            "to_in": 0
+        }
+    ],
+    "comments": [],
+    "authors": [
+        {
+            "author": "aaaaa",
+            "license": "GPL 3.0",
+            "date": "2025-07-21 08:35:44.409859"
+        }
+    ]
+}

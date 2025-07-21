@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # noqa: E402
 """
@@ -96,26 +96,35 @@ class Manager(Gtk.Dialog):
 
     # ----------------------------------------------------------------------
     def __new(self, widget=None, data=None):
-        self.__run_editor(self.element)
+        if self.element is not None:
+            self.__run_editor(self.element)
 
     # ----------------------------------------------------------------------
     def __edit(self, widget=None, data=None):
         name = self.__get_selected()
         if name is None:
             return
-        element = self.get_items()[name]
-        self.__run_editor(element)
+        if self.get_items is not None:
+            items = self.get_items()
+            if items is not None and hasattr(items, '__contains__'):
+                try:
+                    if name in items:
+                        element = items[name]
+                        self.__run_editor(element)
+                except (TypeError, AttributeError, KeyError):
+                    pass
 
     # ----------------------------------------------------------------------
     def __run_editor(self, element):
-        editor = self.editor(self, element)
-        result = editor.run()
-        if result == Gtk.ResponseType.OK:
-            element = editor.get_element()
-            self.main_window.main_control.add_extension(element)
-            self.update()
-        editor.close()
-        editor.destroy()
+        if self.editor is not None:
+            editor = self.editor(self, element)
+            result = editor.run()
+            if result == Gtk.ResponseType.OK:
+                element = editor.get_element()
+                self.main_window.main_control.add_extension(element)
+                self.update()
+            editor.close()
+            editor.destroy()
 
     # ----------------------------------------------------------------------
     def __delete(self, widget=None, data=None):
@@ -124,7 +133,28 @@ class Manager(Gtk.Dialog):
             return
         result = ConfirmDialog(_("Are you sure?"), self).run()
         if result == Gtk.ResponseType.OK:
-            self.main_window.main_control.delete_extension(name, self.element)
+            # Determine the correct element type based on the manager
+            element_type = None
+            if hasattr(self, 'element'):
+                if isinstance(self.element, type):
+                    element_type = self.element
+                else:
+                    # Try to determine type from the manager class
+                    if 'BlockManager' in str(type(self)):
+                        from mosaicode.model.blockmodel import BlockModel
+                        element_type = BlockModel
+                    elif 'PortManager' in str(type(self)):
+                        from mosaicode.model.port import Port
+                        element_type = Port
+                    elif 'CodeTemplateManager' in str(type(self)):
+                        from mosaicode.model.codetemplate import CodeTemplate
+                        element_type = CodeTemplate
+            
+            if element_type is not None:
+                self.main_window.main_control.delete_extension(name, element_type)
+            else:
+                # Fallback to old method
+                self.main_window.main_control.delete_extension(name, self.element)
             self.update()
 
     # ----------------------------------------------------------------------
@@ -132,8 +162,14 @@ class Manager(Gtk.Dialog):
         System()
         System.reload()
         item_list = []
-        for item in self.get_items():
-            item_list.append([item])
+        if self.get_items is not None:
+            items = self.get_items()
+            if items is not None and hasattr(items, '__iter__'):
+                try:
+                    for item in items:
+                        item_list.append([item])
+                except (TypeError, AttributeError, StopIteration, RuntimeError):
+                    pass
         item_list.sort()
         self.tree_store.clear()
         for x in item_list:

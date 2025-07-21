@@ -1,0 +1,26 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "spectrogram",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Spectrogram",
+  "label": "Spectrogram",
+  "color": "150:150:250:150",
+  "group": "GUI",
+  "codes": {
+    "onload": "\n(function () {\n  function SpectrogramVisualizer(audioContext, canvasElement) {\n    this.analyserNode = audioContext.createAnalyser();\n    this.analyserNode.fftSize = 8192;\n    this.fftData = new Float32Array(this.analyserNode.frequencyBinCount);\n\n    this.graphicWidth = parseInt(getComputedStyle(canvasElement).width, 10);\n    this.graphicHeight = parseInt(getComputedStyle(canvasElement).height, 10);\n\n    var gc = this.graphicContext = canvasElement.getContext(\"2d\");\n    gc.fillStyle = '#000000';\n\n    this.pixel = gc.createImageData(1,1);\n    this.pixel.data[3] = 255;\n\n    this.gain = 0;\n    this.stopping = false;\n\n    this.draw();\n  }\n\n  SpectrogramVisualizer.prototype.acceptConnection = function (connectedNode) {\n    connectedNode.connect(this.analyserNode);\n    this.connectedNode = connectedNode;\n  };\n\n  SpectrogramVisualizer.prototype.draw = function () {\n    if (this.stopping) {\n      this.stopping = false;\n      return;\n    }\n\n    var gc = this.graphicContext;\n    var gw = this.graphicWidth;\n    var gh = this.graphicHeight;\n\n    if (!this.connectedNode) {\n      gc.fillRect(0, 0, gw, gh);\n    }\n    else {\n      var slideImage = gc.getImageData(0, 0, gw - 1, gh);\n      gc.putImageData(slideImage, 1, 0);\n\n      var i, y, n;\n\n      this.analyserNode.getFloatFrequencyData(this.fftData);\n\n      for (i = 0; i < gh; ++i) {\n        n = Math.min(Math.max((this.fftData[i] + this.gain + 80) * 4, 0), 255);\n        this.pixel.data[0] = n;\n        this.pixel.data[1] = n;\n        this.pixel.data[2] = n;\n        gc.putImageData(this.pixel, 0, gh - i);\n      }\n    }\n\n    this.animationHandle = requestAnimationFrame(function () { this.draw(); }.bind(this));\n  };\n\n  SpectrogramVisualizer.prototype.releaseConnection = function () {\n    this.connectedNode.disconnect(this.analyserNode);\n    delete this.connectedNode;\n  };\n\n  SpectrogramVisualizer.prototype.stop = function () {\n    this.stopping = true;\n  };\n\n  window.App = window.App || {};\n  window.App.SpectrogramVisualizer = SpectrogramVisualizer;\n})();\n\n(function () {\n    var visCanvas_$id$ = document.getElementById('spectrogram_$id$')\n    var visualizer_$id$ = new  App.SpectrogramVisualizer(context, visCanvas_$id$);\n    visualizer_$id$.gain = 1;\n    visualizer_$id$.acceptConnection(block_$id$);\n})();\n",
+    "declaration": "\nvar block_$id$ = context.createGain();\nblock_$id$.gain = 1;\nvar $port[input]$ = block_$id$;\n",
+    "html": "\n<h2>SpectrogramVisualizer_Block$id$</h2>\n<div>\n  <canvas id=\"spectrogram_$id$\" width=\"1024\" height=\"300\"></canvas>\n</div>\n\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Input",
+      "conn_type": "Input",
+      "name": "input"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "oscillator",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Sound output",
+  "label": "Oscillator",
+  "color": "50:150:250:150",
+  "group": "Sound",
+  "codes": {
+    "declaration": "\n// block_$id$ = Oscillator\nvar block_$id$ =  context.createOscillator();\nvar $port[osc_freq]$ = block_$id$.frequency;\nvar $port[sound]$ = block_$id$;\nvar $port[freq]$ = function(value){\n    block_$id$.frequency.value = value;\n};\n\nvar $port[type]$ = function(value){\n    oscillator = ''\n    if (value < 1) oscillator = 'square';\n    if (value == 1) oscillator = 'sine';\n    if (value == 2) oscillator = 'sawtooth';\n    if (value > 2) oscillator = 'triangle';\n    block_$id$.type = oscillator;\n};\n",
+    "execution": "\nblock_$id$.type = '$prop[type]$';\nblock_$id$.frequency.value = $prop[freq]$; // value in hertz\nblock_$id$.detune.value = 100; // value in cents\nblock_$id$.start(0);\n"
+  },
+  "properties": [
+    {
+      "name": "freq",
+      "label": "Frequency",
+      "type": "Float",
+      "lower": 0,
+      "upper": 20000,
+      "step": 1,
+      "value": 440
+    },
+    {
+      "name": "type",
+      "label": "Type",
+      "type": "Combo",
+      "values": [
+        "square",
+        "sine",
+        "sawtooth",
+        "triangle"
+      ],
+      "value": "sine"
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Osc Frequency",
+      "conn_type": "Input",
+      "name": "osc_freq"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "conn_type": "Input",
+      "label": "Frequency",
+      "name": "freq"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "conn_type": "Input",
+      "name": "type",
+      "label": "Type"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "name": "sound",
+      "conn_type": "Output",
+      "label": "Sound"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "bool2float",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Bool to Float",
+  "label": "Bool 2 Float",
+  "color": "200:200:25:150",
+  "group": "Conversion",
+  "codes": {
+    "declaration": "\nvar $port[float_output]$ = [];\nvar $port[bool_input]$ = function(value) {\n    var ret = value ? 1.0 : 0.0;\n    for (var i = 0; i < $port[float_output]$.length ; i++){\n        $port[float_output]$[i](ret);\n    }\n    return true;\n};\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.bool",
+      "label": "Bool Input",
+      "conn_type": "Input",
+      "name": "bool_input"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Float Output",
+      "conn_type": "Output",
+      "name": "float_output"
+    }
+  ]
+}

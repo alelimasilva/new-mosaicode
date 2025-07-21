@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the StringField class.
@@ -7,6 +7,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mosaicode.GUI.fields.field import Field
+from typing import Any, Dict, List, Optional, Union
 
 
 class LabelField(Field):
@@ -17,7 +18,7 @@ class LabelField(Field):
     configuration = {"label": "", "value": "", "name": ""}
 
     # --------------------------------------------------------------------------
-    def __init__(self, data, event):
+    def __init__(self, data, event) -> None:
         """
         This method is the constructor.
         """
@@ -38,11 +39,11 @@ class LabelField(Field):
         self.show_all()
 
     # --------------------------------------------------------------------------
-    def get_value(self):
+    def get_value(self) -> Any:
         return self.field.get_text()
 
     # --------------------------------------------------------------------------
-    def set_value(self, value):
+    def set_value(self, value) -> None:
         self.field.set_text(value)
 
 # --------------------------------------------------------------------------

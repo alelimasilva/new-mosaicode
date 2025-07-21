@@ -1,0 +1,12 @@
+{
+  "source": "JSON",
+  "data": "PORT",
+  "version": "0.0.1",
+  "type": "mosaicode_lib_javascript_webaudio.extensions.ports.midi",
+  "language": "javascript",
+  "hint": "MIDI",
+  "color": "#000",
+  "multiple": true,
+  "var_name": "$block[label]$_$block[id]$_$port[name]$",
+  "code": "$output$.push($input$);\n"
+}

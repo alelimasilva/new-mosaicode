@@ -1,0 +1,36 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "multiplyfloat",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Multiply float values",
+  "label": "Multiply Float",
+  "color": "200:200:25:150",
+  "group": "Arithmetics",
+  "codes": {
+    "declaration": "\n// block_$id$ = Multiply Float\nvar block_$id$_arg1 = 0;\nvar block_$id$_arg2 = 0;\nvar $port[result]$ = [];\n\nvar $port[first_number]$ = function(value){\n    block_$id$_arg1 = parseFloat(value);\n    result = parseFloat(block_$id$_arg1) * parseFloat(block_$id$_arg2);\n    for (var i = 0; i < $port[result]$.length ; i++){\n        $port[result]$[i](result);\n    }\n    return true;\n    };\n\nvar $port[second_number]$ = function(value){\n    block_$id$_arg2 = parseFloat(value);\n    result = parseFloat(block_$id$_arg1) * parseFloat(block_$id$_arg2);\n    for (var i = 0; i < $port[result]$.length ; i++){\n        $port[result]$[i](result);\n    }\n    return true;\n    };\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "name": "first_number",
+      "conn_type": "Input",
+      "label": "First Number"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "conn_type": "Input",
+      "name": "second_number",
+      "label": "Second Number"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Result",
+      "conn_type": "Output",
+      "name": "result"
+    }
+  ]
+}

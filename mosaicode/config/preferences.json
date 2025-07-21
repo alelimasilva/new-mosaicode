@@ -1,0 +1,15 @@
+{
+    "conf_file_path": "configuration",
+    "author": "",
+    "license": "GPL 3.0",
+    "version": "0.0.1",
+    "recent_files": [],
+    "default_filename": "%n",
+    "grid": 10,
+    "width": 900,
+    "height": 500,
+    "hpaned_work_area": 150,
+    "vpaned_bottom": 450,
+    "vpaned_left": 300,
+    "connection": "Curve"
+}

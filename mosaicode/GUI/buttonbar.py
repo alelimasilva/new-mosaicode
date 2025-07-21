@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # noqa: E402
 """
@@ -7,6 +7,7 @@ This module contains the Button Bar class.
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from typing import Any, Dict, List, Optional, Union
 
 class ButtonBar(Gtk.HBox):
     """
@@ -18,7 +19,7 @@ class ButtonBar(Gtk.HBox):
         Gtk.HBox.__init__(self)
 
     # ----------------------------------------------------------------------
-    def add_button(self, button_data):
+    def add_button(self, button_data) -> None:
         icon_size = Gtk.IconSize.LARGE_TOOLBAR
         icon = Gtk.Image.new_from_icon_name(button_data["icone"], icon_size)
         button = Gtk.ToolButton.new(icon, button_data["data"])

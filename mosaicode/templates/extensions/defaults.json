@@ -1,0 +1,55 @@
+{
+  "extension_types": {
+    "block": {
+      "file_extension": ".json",
+      "required_fields": [
+        "type",
+        "label",
+        "color",
+        "group",
+        "ports",
+        "properties"
+      ],
+      "optional_fields": [
+        "help",
+        "codes",
+        "gen_codes"
+      ]
+    },
+    "port": {
+      "file_extension": ".json",
+      "required_fields": [
+        "type",
+        "name",
+        "conn_type"
+      ],
+      "optional_fields": [
+        "hint",
+        "color",
+        "code"
+      ]
+    },
+    "codetemplate": {
+      "file_extension": ".json",
+      "required_fields": [
+        "name",
+        "language",
+        "code_parts"
+      ],
+      "optional_fields": [
+        "description",
+        "version"
+      ]
+    }
+  },
+  "extension_directories": {
+    "blocks": "extensions/blocks",
+    "ports": "extensions/ports",
+    "codetemplates": "extensions/codetemplates"
+  },
+  "extension_validation": {
+    "validate_schema": true,
+    "check_required_fields": true,
+    "validate_file_structure": true
+  }
+}

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the menu bar.
@@ -7,7 +7,7 @@ import gettext
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 
 _ = gettext.gettext
@@ -78,8 +78,12 @@ class Menu(Gtk.MenuBar):
 
         # -------------------------- View -------------------------------------
         view_menu = Gtk.Menu()
-        self.create_menu(_("Zoom In"), None, view_menu, mc.zoom_in)
-        self.create_menu(_("Zoom Out"), None, view_menu, mc.zoom_out)
+        # Zoom In igual ao Zoom Out: exibe Ctrl+=, mas aceita Ctrl++ (teclado numérico)
+        zoom_in_item = self.create_menu(_("Zoom In"), "<Control>equal", view_menu, mc.zoom_in)
+        zoom_in_item.add_accelerator("activate", self.accel_group, Gdk.KEY_KP_Add, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
+        # Zoom Out
+        zoom_out_item = self.create_menu(_("Zoom Out"), "<Control>minus", view_menu, mc.zoom_out)
+        zoom_out_item.add_accelerator("activate", self.accel_group, Gdk.KEY_KP_Subtract, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
         self.create_menu(
             _("Normal Size"), "<Control>0", view_menu, mc.zoom_normal)
 
@@ -89,7 +93,7 @@ class Menu(Gtk.MenuBar):
                          view_menu, mc.uncollapse_all)
         view_menu.append(Gtk.SeparatorMenuItem())
         self.__create_check_menu(
-            _("Show Grid"), "<Control>g", view_menu, mc.show_grid)
+            _("Show Grid"), "<Control>g", view_menu, mc.toggle_grid)
         self.add_menu_category(_("View"), view_menu)
 
         # -------------------------- Insert -------------------------------------
@@ -104,9 +108,10 @@ class Menu(Gtk.MenuBar):
 
         # -------------------------- Process --------------------------------
         process_menu = Gtk.Menu()
-        self.create_menu(_("Run"), "<Control>R", process_menu, mc.run)
-        self.create_menu(_("Save Source"), None,
-                         process_menu, mc.save_source)
+        self.create_menu(_("Run"), "<Control>R", process_menu, mc.execute_only)
+        self.create_menu(_("Save"), None,
+                         process_menu, mc.save_source_only)
+        # Removida a opção 'Save and Run'
         self.create_menu(_("View Source"), None,
                          process_menu, mc.view_source)
         self.add_menu_category(_("Process"), process_menu)
@@ -156,7 +161,7 @@ class Menu(Gtk.MenuBar):
                 "activate", self.accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         menu.append(item)
         if action is not None:
-            item.connect("activate", action)
+            item.connect("activate", self.__menu_clicked, None)
             self.actions[item] = action
         return item
 

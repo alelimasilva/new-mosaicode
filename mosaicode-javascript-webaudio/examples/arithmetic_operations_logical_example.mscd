@@ -1,0 +1,170 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.arithmetic operations.equals",
+      "id": 1,
+      "collapsed": false,
+      "x": 230.0,
+      "y": 90.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.form.number",
+      "id": 2,
+      "collapsed": false,
+      "x": 30.0,
+      "y": 30.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "0.0"
+        },
+        {
+          "key": "label",
+          "value": "Number 1: "
+        },
+        {
+          "key": "min",
+          "value": "0.0"
+        },
+        {
+          "key": "max",
+          "value": "100.0"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.form.number",
+      "id": 3,
+      "collapsed": false,
+      "x": 30.0,
+      "y": 140.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "0.0"
+        },
+        {
+          "key": "label",
+          "value": "Number 2: "
+        },
+        {
+          "key": "min",
+          "value": "0.0"
+        },
+        {
+          "key": "max",
+          "value": "100.0"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.arithmetic operations.greaterthan",
+      "id": 5,
+      "collapsed": false,
+      "x": 230.0,
+      "y": 220.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.Types.float",
+      "id": 6,
+      "collapsed": false,
+      "x": 30.0,
+      "y": 280.0,
+      "properties": [
+        {
+          "key": "float_value",
+          "value": "10.0"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.GUI.print",
+      "id": 8,
+      "collapsed": false,
+      "x": 850.0,
+      "y": 130.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "Label"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.logical operations.or",
+      "id": 10,
+      "collapsed": false,
+      "x": 450.0,
+      "y": 130.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.logical operations.not",
+      "id": 11,
+      "collapsed": false,
+      "x": 660.0,
+      "y": 130.0,
+      "properties": []
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 2,
+      "from_out": 0,
+      "to_block": 1,
+      "to_in": 0
+    },
+    {
+      "from_block": 3,
+      "from_out": 0,
+      "to_block": 1,
+      "to_in": 1
+    },
+    {
+      "from_block": 3,
+      "from_out": 0,
+      "to_block": 5,
+      "to_in": 0
+    },
+    {
+      "from_block": 6,
+      "from_out": 0,
+      "to_block": 5,
+      "to_in": 1
+    },
+    {
+      "from_block": 1,
+      "from_out": 2,
+      "to_block": 10,
+      "to_in": 0
+    },
+    {
+      "from_block": 5,
+      "from_out": 2,
+      "to_block": 10,
+      "to_in": 1
+    },
+    {
+      "from_block": 10,
+      "from_out": 2,
+      "to_block": 11,
+      "to_in": 0
+    },
+    {
+      "from_block": 11,
+      "from_out": 1,
+      "to_block": 8,
+      "to_in": 5
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

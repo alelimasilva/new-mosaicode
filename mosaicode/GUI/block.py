@@ -5,7 +5,9 @@ This module contains the Block class.
 """
 import os
 import gi
+import logging
 gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '3.0')
 gi.require_version('GooCanvas', '2.0')
 gi.require_version('PangoCairo', '1.0')
 from gi.repository import Gtk
@@ -13,9 +15,11 @@ from gi.repository import Gdk
 from gi.repository import GooCanvas
 from gi.repository import GdkPixbuf
 from gi.repository import Pango
+from typing import Any, Optional, Dict, List, Tuple
 from mosaicode.system import System
 from mosaicode.model.blockmodel import BlockModel
 from mosaicode.model.port import Port
+
 
 class Block(GooCanvas.CanvasGroup, BlockModel):
     """
@@ -24,24 +28,30 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
 
     # ----------------------------------------------------------------------
 
-    def __init__(self, diagram, block):
+    def __init__(self, diagram: Any, block: Optional[BlockModel] = None) -> None:
         """
         This method is the constuctor.
         """
         GooCanvas.CanvasGroup.__init__(self)
-        BlockModel.__init__(self, block)
-
+        if block is not None:
+            # Copia todos os atributos do BlockModel fornecido
+            for field_name in block.__dataclass_fields__:
+                setattr(self, field_name, getattr(block, field_name))
+        else:
+            BlockModel.__init__(self)
         self.diagram = diagram
-        self.remember_x = 0
-        self.remember_y = 0
+        self.selected = False
 
-        self.widgets = {}
-        self.focus = False
-        self.has_flow = False
-        self.is_selected = False
-        self.is_collapsed = False
+        self.remember_x: int = 0
+        self.remember_y: int = 0
 
-        self.width = 112
+        self.widgets: Dict[str, Any] = {}
+        self.focus: bool = False
+        self.has_flow: bool = False
+        self.is_selected: bool = False
+        self.is_collapsed: bool = False
+
+        self.width: int = 112
 
         self.connect("button-press-event", self.__on_button_press)
         self.connect("motion-notify-event", self.__on_motion_notify)
@@ -49,7 +59,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         self.connect("leave-notify-event", self.__on_leave_notify)
         self.move(int(float(self.x)), int(float(self.y)))
 
-        self.height = self.__calculate_height()
+        self.height: int = self.__calculate_height()
 
         self.__draw_rect()
         self.__draw_label()
@@ -58,7 +68,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         self.update_flow()
 
     # ----------------------------------------------------------------------
-    def __on_button_press(self, canvas_item, target_item, event):
+    def __on_button_press(self, canvas_item: Any, target_item: Any, event: Gdk.Event) -> bool:
         """
         This method monitors when the button is pressed.
 
@@ -68,6 +78,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
                 * **Types** (:class:`boolean<boolean>`)
                 Indicates the button is pressed.
             """
+        logging.debug(r"Block.__on_button_press chamado para: {getattr(self, 'label', None)}")
         # with Shift
         if event.state == Gdk.ModifierType.SHIFT_MASK \
                 | Gdk.ModifierType.MOD2_MASK:
@@ -95,7 +106,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return True
 
     # ----------------------------------------------------------------------
-    def __on_motion_notify(self, canvas_item, target_item, event=None):
+    def __on_motion_notify(self, canvas_item: Any, target_item: Any, event: Optional[Gdk.Event] = None) -> bool:
         """
         This method monitors the motion.
 
@@ -118,7 +129,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return False
 
     # ----------------------------------------------------------------------
-    def __on_enter_notify(self, canvas_item, target_item, event=None):
+    def __on_enter_notify(self, canvas_item: Any, target_item: Any, event: Optional[Gdk.Event] = None) -> bool:
         """
         This method monitors the motion.
 
@@ -132,7 +143,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return False
 
     # ----------------------------------------------------------------------
-    def __on_leave_notify(self, canvas_item, target_item, event=None):
+    def __on_leave_notify(self, canvas_item: Any, target_item: Any, event: Optional[Gdk.Event] = None) -> bool:
         """
         This method monitors the motion.
 
@@ -149,10 +160,49 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return False
 
     # ----------------------------------------------------------------------
-    def __draw_rect(self):
+    def get_color_as_guint(self) -> int:
         """
-        This method draw a rectangle.
+        Converte a cor para o formato guint esperado pelo GooCanvas.
+        
+        Returns:
+            int: Valor guint da cor
         """
+        color_str = self.get_color_as_rgba()
+        
+        # Se a cor começa com #, é um valor hexadecimal
+        if color_str.startswith("#"):
+            # Remove o # e converte para inteiro
+            hex_color = color_str[1:]
+            if len(hex_color) == 6:  # RGB
+                r = int(hex_color[0:2], 16)
+                g = int(hex_color[2:4], 16)
+                b = int(hex_color[4:6], 16)
+                # Converte para formato RGBA (A=255 para opaco)
+                return (r << 24) | (g << 16) | (b << 8) | 255
+            elif len(hex_color) == 8:  # RGBA
+                r = int(hex_color[0:2], 16)
+                g = int(hex_color[2:4], 16)
+                b = int(hex_color[4:6], 16)
+                a = int(hex_color[6:8], 16)
+                return (r << 24) | (g << 16) | (b << 8) | a
+        
+        # Se a cor está no formato rgba(r,g,b,a)
+        elif color_str.startswith("rgba("):
+            # Extrai os valores R,G,B,A
+            values = color_str[5:-1].split(",")
+            if len(values) == 4:
+                r = int(float(values[0].strip()))
+                g = int(float(values[1].strip()))
+                b = int(float(values[2].strip()))
+                a = int(float(values[3].strip()))
+                return (r << 24) | (g << 16) | (b << 8) | a
+        
+        # Cor padrão se não conseguir converter
+        return 0xFF000000  # Preto opaco
+
+    # ----------------------------------------------------------------------
+    def __draw_rect(self) -> None:
+        logging.debug(r"__draw_rect: width={self.width}, height={self.height}, x=0, y=10")
         rect = GooCanvas.CanvasRect(parent=self,
                                     x=0,
                                     y=10,
@@ -161,13 +211,13 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
                                     radius_x=10,
                                     radius_y=10,
                                     stroke_color="black",
-                                    fill_color_rgba=self.get_color_as_int(),
+                                    fill_color_rgba=self.get_color_as_guint(),
                                     tooltip=self.label
                                     )
         self.widgets["Rect"] = rect
 
     # ----------------------------------------------------------------------
-    def __draw_icon(self):
+    def __draw_icon(self) -> None:
         """
         This method draw a icon.
         """
@@ -189,7 +239,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         self.widgets["Icon"] = icon
 
     # ----------------------------------------------------------------------
-    def __draw_label(self):
+    def __draw_label(self) -> None:
         """
         This method draw the label.
 
@@ -210,35 +260,40 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         self.widgets["Label"] = label
 
     # ----------------------------------------------------------------------
-    def __create_ports_label(self, port):
+    def __create_ports_label(self, port: Port) -> str:
+        # Extrai apenas o nome simples do tipo
+        tipo = port.hint if port.hint else port.type
+        if tipo and '.' in tipo:
+            tipo = tipo.split('.')[-1]
+        tipo = f"[{tipo.upper()}]"
+        # Define cor: preto para FLOAT, vermelho para outros tipos, a menos que port.color esteja definido
+        cor = port.color if port.color and port.color not in ('#000', '#000000', '#FFFFFF', '#FFF', 'white') else None
+        if not cor:
+            if tipo == '[FLOAT]':
+                cor = '#000000'
+            else:
+                cor = '#FF0000'
         text_name = "<span font_family ='Arial' size = '7000' weight = 'ultralight'>" + \
-            "<span color = '" + port.color + "'>"
-        if self.is_collapsed:
-            text_name += " - "
-        else:
-            text_name += "{" + port.hint + "}"
-        text_name += "</span></span>"
+            f"<span color = '{cor}'>{tipo}</span></span>"
         return text_name
 
     # ----------------------------------------------------------------------
-    def __draw_ports(self):
-        """        for port in self.ports:
-
-        This method draws the ports.
-        """
-        for port in self.ports:
+    def __draw_ports(self) -> None:
+        logging.debug(r"__draw_ports chamado para bloco: {getattr(self, 'label', None)}")
+        logging.debug(r"Número de portas: {len(self.ports)}")
+        logging.debug(r"self.width no __draw_ports: {self.width}")
+        for i, port in enumerate(self.ports):
             text_name = self.__create_ports_label(port)
-            x,y = self.__get_port_pos(port)
+            x, y = self.__get_port_pos(port)
+            logging.debug(r"Porta {i+1}: label={getattr(port, 'label', None)}, type={getattr(port, 'type', None)}, is_input={port.is_input()}, x={x}, y={y}")
             if port.is_input():
                 alignment = Pango.Alignment.LEFT
-                anchor=GooCanvas.CanvasAnchorType.WEST
-                press_event = self.__on_input_press
-                release_event = self.__on_input_release
+                anchor = GooCanvas.CanvasAnchorType.WEST
             else:
                 alignment = Pango.Alignment.RIGHT
                 anchor = GooCanvas.CanvasAnchorType.EAST
-                press_event = self.__on_output_press
-                release_event = self.__on_output_release
+            press_event = self.__on_input_press if port.is_input() else self.__on_output_press
+            release_event = self.__on_input_release if port.is_input() else self.__on_output_release
 
             text = GooCanvas.CanvasText(parent=self,
                                  text=text_name,
@@ -250,12 +305,13 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
                                  use_markup=True,
                                  tooltip=port.label
                                  )
-            text.connect("button-press-event", press_event , port)
+            text.connect("button-press-event", press_event, port)
             text.connect("button-release-event", release_event, port)
             self.widgets["port" + str(port)] = text
+            logging.debug(r"Porta {i+1} criada com sucesso: anchor={anchor}, alignment={alignment}")
 
     # ----------------------------------------------------------------------
-    def __on_input_press(self, canvas_item, target_item, event, port):
+    def __on_input_press(self, canvas_item: Any, target_item: Any, event: Gdk.Event, port: Port) -> bool:
         """
         This method return true if a input was connected.
 
@@ -270,7 +326,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return True
 
     # ----------------------------------------------------------------------
-    def __on_input_release(self, canvas_item, target_item, event, args):
+    def __on_input_release(self, canvas_item: Any, target_item: Any, event: Gdk.Event, args: Any) -> bool:
         """
         This method monitors the input release.
 
@@ -284,7 +340,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return True
 
     # ----------------------------------------------------------------------
-    def __on_output_press(self, canvas_item, target_item, event, port):
+    def __on_output_press(self, canvas_item: Any, target_item: Any, event: Gdk.Event, port: Port) -> bool:
         """
         This method monitors the output state, monitors if output was pressed.
 
@@ -300,7 +356,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return True
 
     # ----------------------------------------------------------------------
-    def __on_output_release(self, canvas_item, target_item, event, args):
+    def __on_output_release(self, canvas_item: Any, target_item: Any, event: Gdk.Event, args: Any) -> bool:
         """
         This method monitors the output state, monitors if output was release.
 
@@ -310,28 +366,28 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return True
 
     # ----------------------------------------------------------------------
-    def __get_port_pos(self, port):
-
+    def __get_port_pos(self, port: Port) -> Tuple[int, int]:
         if self.is_collapsed:
             y = 16 + (port.type_index * 6)
         else:
-            y = 26 + (port.type_index * 11)
-
+            if port.is_input():
+                y = 26 + (port.type_index * 11)
+            else:
+                # Centralizar verticalmente a porta de saída
+                y = 26 + ((self.height - 15) // 2)
         if port.is_input():
             x = 0
         else:
             x = self.width
-
         if not self.is_collapsed:
             return (x, y)
-
         if port.is_input():
             return (x + 36, y - 8)
         else:
             return (x - 25, y - 8)
 
     # ----------------------------------------------------------------------
-    def get_port_pos(self, port):
+    def get_port_pos(self, port: Port) -> Tuple[float, float]:
         """
         This method get input position.
 
@@ -345,14 +401,14 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return x + x2, y + y2 + 1
 
     # ----------------------------------------------------------------------
-    def __calculate_height(self):
+    def __calculate_height(self) -> int:
         if self.is_collapsed:
             return max(((self.maxIO - 1) * 5) + (self.maxIO * 4), 40)
         else:
             return max(((self.maxIO) * 5) + 15 + (self.maxIO * 7), 50)
 
     # ----------------------------------------------------------------------
-    def move(self, x, y):
+    def move(self, x: int, y: int) -> None:
         """
         This method move a block.
 
@@ -366,7 +422,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         self.translate(new_x, new_y)
 
     # ----------------------------------------------------------------------
-    def adjust_position(self):
+    def adjust_position(self) -> None:
         position = self.get_position()
         grid = System.get_preferences().grid
         new_x = position[0] - position[0] % grid
@@ -374,7 +430,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         self.translate(new_x - position[0], new_y - position[1])
 
     # ----------------------------------------------------------------------
-    def get_position(self):
+    def get_position(self) -> Tuple[float, float]:
         """
         This method get position the block.
 
@@ -385,7 +441,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return x, y
 
     # ----------------------------------------------------------------------
-    def set_properties(self, data):
+    def set_properties(self, data: Any) -> None:
         """
         This method set properties of each block.
 
@@ -395,7 +451,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         BlockModel.set_properties(self, data)
 
     # ----------------------------------------------------------------------
-    def get_properties(self):
+    def get_properties(self) -> Any:
         """
         This method get properties of each block.
 
@@ -405,7 +461,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return BlockModel.get_properties(self)
 
     # ----------------------------------------------------------------------
-    def update_flow(self):
+    def update_flow(self) -> bool:
         """
         This method update flow.
 
@@ -429,7 +485,7 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         return self.has_flow
 
     # ----------------------------------------------------------------------
-    def __update_state(self):
+    def __update_state(self) -> None:
         """
         This method update the Line state.
         """
@@ -485,5 +541,3 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
                     self.widgets["port" + str(port)].set_property("x", x)
                     self.widgets["port" + str(port)].set_property("y", y)
                     self.widgets["port" + str(port)].set_property("text", self.__create_ports_label(port))
-
-# ----------------------------------------------------------------------

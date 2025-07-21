@@ -1,0 +1,24 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "speaker",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Sound output",
+  "label": "Speaker",
+  "color": "150:150:250:150",
+  "group": "Sound",
+  "codes": {
+    "declaration": "\n// block_$id$ = $label$\nvar $port[sound]$ = context.destination;\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Sound",
+      "conn_type": "Input",
+      "name": "sound"
+    }
+  ]
+}

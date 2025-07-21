@@ -1,0 +1,33 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "brackground",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Change Background color",
+  "label": "Background",
+  "color": "50:150:0:150",
+  "group": "Interface",
+  "codes": {
+    "declaration": "\nvar $port[rgb]$ = function(value){\n    document.body.style.backgroundColor = value;\n    return true;\n    };\n",
+    "onload": "\n$port[rgb]$('$prop[color]$');\n\n"
+  },
+  "properties": [
+    {
+      "name": "color",
+      "label": "Color",
+      "value": "#F00",
+      "format": "FF00FF",
+      "type": "Color"
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.color",
+      "name": "rgb",
+      "conn_type": "Input",
+      "label": "RGB COlor"
+    }
+  ]
+}

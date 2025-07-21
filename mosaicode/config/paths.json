@@ -1,0 +1,15 @@
+{
+  "paths": {
+    "user_dir": "~/mosaicode",
+    "extensions_dir": "~/mosaicode/extensions",
+    "examples_dir": "~/mosaicode/examples",
+    "code_gen_dir": "~/mosaicode/code-gen",
+    "data_dir": "~/mosaicode/data",
+    "config_dir": "~/mosaicode/config"
+  },
+  "system_paths": {
+    "install_prefix": "/usr/local",
+    "system_data": "/usr/share/mosaicode",
+    "system_config": "/etc/mosaicode"
+  }
+}

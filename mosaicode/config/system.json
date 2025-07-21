@@ -1,0 +1,20 @@
+{
+  "app_name": "mosaicode",
+  "version": "0.0.1",
+  "zoom_levels": {
+    "original": 1,
+    "in": 2,
+    "out": 3
+  },
+  "directories": [
+    "extensions",
+    "images",
+    "code-gen"
+  ],
+  "file_extensions": {
+    "diagram": ".mscd",
+    "code_template": ".json",
+    "port": ".json"
+  },
+  "extension_server_url": "https://alice.ufsj.edu.br/mosaicode/extensions/"
+} 

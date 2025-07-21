@@ -3,6 +3,7 @@
 This module contains the Diagram class.
 """
 import gi
+import logging
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GooCanvas', '2.0')
@@ -10,12 +11,14 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import GooCanvas
+from typing import Any, Optional, List, Dict, Tuple
 from mosaicode.GUI.block import Block
 from mosaicode.GUI.connector import Connector
 from mosaicode.GUI.comment import Comment
 from mosaicode.system import System as System
 from mosaicode.model.diagrammodel import DiagramModel
 from mosaicode.model.blockmodel import BlockModel
+from mosaicode.control.diagramcontrol import DiagramControl
 import gettext
 _ = gettext.gettext
 
@@ -27,7 +30,7 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
 
     # ----------------------------------------------------------------------
 
-    def __init__(self, main_window):
+    def __init__(self, main_window: Any) -> None:
         GooCanvas.Canvas.__init__(self)
         DiagramModel.__init__(self)
         self.set_property("expand", True)
@@ -36,10 +39,10 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
         self.set_property("clear-background", True)
         Gtk.Widget.grab_focus(self)
 
-        self.last_clicked_point = (None, None)
-        self.main_window = main_window
+        self.last_clicked_point: Tuple[Optional[float], Optional[float]] = (None, None)
+        self.main_window: Any = main_window
 
-        self.curr_connector = None
+        self.curr_connector: Optional[Connector] = None
 
         self.connect("motion-notify-event", self.__on_motion_notify)
         self.connect_after("button_press_event", self.__on_button_press)
@@ -54,8 +57,8 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
             [Gtk.TargetEntry.new('text/plain', Gtk.TargetFlags.SAME_APP, 1)],
             Gdk.DragAction.DEFAULT | Gdk.DragAction.COPY)
 
-        self.show_grid = False
-        self.select_rect = None
+        self.show_grid: bool = False
+        self.select_rect: Optional[Any] = None
         self.__draw_grid()
 
         # Used for cycle detection
@@ -197,7 +200,7 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
         return
 
     # ----------------------------------------------------------------------
-    def __valid_connector(self, newCon):
+    def __valid_connector(self, newCon: Connector) -> bool:
         """
         Parameters:
 
@@ -219,7 +222,7 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
         return True
 
     # ----------------------------------------------------------------------
-    def __cycle_detection(self, newCon):
+    def __cycle_detection(self, newCon: Connector) -> bool:
         marks = []
         marks.append(newCon.input.id)
         i = 0
@@ -318,7 +321,8 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
         for conn in self.connectors:
             conn.update_flow()
         for comment in self.comments:
-            comment.update_flow()
+            if hasattr(comment, 'update_flow'):
+                comment.update_flow()
 
     # ----------------------------------------------------------------------
     def change_zoom(self, value):
@@ -341,6 +345,171 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
         self.set_modified(True)
 
     # ----------------------------------------------------------------------
+    def zoom_in(self) -> None:
+        """
+        Zoom in on the diagram.
+        """
+        self.change_zoom(System.ZOOM_IN)
+
+    # ----------------------------------------------------------------------
+    def zoom_out(self) -> None:
+        """
+        Zoom out on the diagram.
+        """
+        self.change_zoom(System.ZOOM_OUT)
+
+    # ----------------------------------------------------------------------
+    def zoom_normal(self) -> None:
+        """
+        Reset zoom to normal on the diagram.
+        """
+        self.change_zoom(System.ZOOM_ORIGINAL)
+
+    # ----------------------------------------------------------------------
+    def align_top(self) -> None:
+        """
+        Align selected blocks to top.
+        """
+        logging.debug(r"Diagram.align_top() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.align("TOP")
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.align_top() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def align_bottom(self) -> None:
+        """
+        Align selected blocks to bottom.
+        """
+        logging.debug(r"Diagram.align_bottom() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.align("BOTTOM")
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.align_bottom() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def align_left(self) -> None:
+        """
+        Align selected blocks to left.
+        """
+        logging.debug(r"Diagram.align_left() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.align("LEFT")
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.align_left() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def align_right(self) -> None:
+        """
+        Align selected blocks to right.
+        """
+        logging.debug(r"Diagram.align_right() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.align("RIGHT")
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.align_right() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def collapse_all(self) -> None:
+        """
+        Collapse all blocks in the diagram.
+        """
+        diagram_control = DiagramControl(self)
+        diagram_control.collapse_all(True)
+
+    # ----------------------------------------------------------------------
+    def uncollapse_all(self) -> None:
+        """
+        Uncollapse all blocks in the diagram.
+        """
+        diagram_control = DiagramControl(self)
+        diagram_control.collapse_all(False)
+
+    # ----------------------------------------------------------------------
+    def undo(self) -> None:
+        """
+        Undo last action.
+        """
+        logging.debug(r"Diagram.undo() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.undo()
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.undo() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def redo(self) -> None:
+        """
+        Redo last undone action.
+        """
+        logging.debug(r"Diagram.redo() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.redo()
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.redo() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def delete(self) -> None:
+        """
+        Delete selected elements.
+        """
+        logging.debug(r"Diagram.delete() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.delete()
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.delete() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def add_comment(self, comment=None) -> None:
+        """
+        Add a comment to the diagram.
+        """
+        diagram_control = DiagramControl(self)
+        diagram_control.add_comment(comment)
+
+    # ----------------------------------------------------------------------
+    def copy(self) -> None:
+        """
+        Copy selected elements.
+        """
+        logging.debug(r"Diagram.copy() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.copy()
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.copy() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def paste(self) -> None:
+        """
+        Paste elements from clipboard.
+        """
+        logging.debug(r"Diagram.paste() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.paste()
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.paste() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
+    def cut(self) -> None:
+        """
+        Cut selected elements.
+        """
+        logging.debug(r"Diagram.cut() chamado")
+        diagram_control = DiagramControl(self)
+        diagram_control.cut()
+        self.update_flows()
+        self.redraw()
+        logging.debug(r"Diagram.cut() - atualização visual concluída")
+
+    # ----------------------------------------------------------------------
     def show_comment_property(self, comment):
         """
         This method show comment property.
@@ -352,12 +521,8 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
 
     # ----------------------------------------------------------------------
     def show_block_property(self, block):
-        """
-        This method show block property.
-
-            Parameters:
-                * **block**(:class: `Block<mosaicode.GUI.block>`)
-        """
+        logging.debug(r"Diagram.show_block_property chamado para: {getattr(block, 'label', None)}")
+        logging.debug(r"Propriedades do bloco: {len(getattr(block, 'properties', []))}")
         self.main_window.property_box.set_block(block)
 
     # ----------------------------------------------------------------------
@@ -378,21 +543,26 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
         for conn in self.connectors:
             conn.is_selected = False
         for comment in self.comments:
-            comment.is_selected = False
+            if hasattr(comment, 'is_selected'):
+                comment.is_selected = False
 
     # ----------------------------------------------------------------------
     def select_all(self):
         """
         This method select all blocks in diagram.
         """
+        logging.debug(r"Diagram.select_all() chamado")
         for key in self.blocks:
             self.blocks[key].is_selected = True
         for conn in self.connectors:
             conn.is_selected = True
         for comment in self.comments:
-            comment.is_selected = True
+            if hasattr(comment, 'is_selected'):
+                comment.is_selected = True
         self.update_flows()
+        self.redraw()
         Gtk.Widget.grab_focus(self)
+        logging.debug(r"Diagram.select_all() - {len(self.blocks)} blocos selecionados")
 
     # ----------------------------------------------------------------------
     def move_selected(self, x, y):
@@ -411,11 +581,12 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
             self.blocks[key].move(x, y)
 
         for comment in self.comments:
-            if not comment.is_selected:
+            if not hasattr(comment, 'is_selected') or not comment.is_selected:
                 continue
-            pos_x, pos_y = comment.get_position()
-            x, y = self.check_limit(x, y, pos_x, pos_y)
-            comment.move(x, y)
+            if hasattr(comment, 'get_position'):
+                pos_x, pos_y = comment.get_position()
+                x, y = self.check_limit(x, y, pos_x, pos_y)
+                comment.move(x, y)
         self.update_flows()
 
     # ----------------------------------------------------------------------
@@ -458,7 +629,8 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
                 * **state**
         """
         self.modified = state
-        self.main_window.work_area.rename_diagram(self)
+        if hasattr(self.main_window, 'work_area') and self.main_window.work_area is not None:
+            self.main_window.work_area.rename_diagram(self)
 
     # ---------------------------------------------------------------------
     def redraw(self):
@@ -506,8 +678,23 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
         i = 0
         for comment in self.comments:
             if not isinstance(comment, Comment):
-                comm = Comment(self)
-                comm.move(comment.x, comment.y)
+                # Se é um dicionário (dados serializados), criar CommentModel primeiro
+                if isinstance(comment, dict):
+                    from mosaicode.model.commentmodel import CommentModel
+                    comment_model = CommentModel()
+                    comment_model.id = comment.get('id', -1)
+                    comment_model.x = comment.get('x', 0)
+                    comment_model.y = comment.get('y', 0)
+                    # Restaurar propriedades
+                    if 'text' in comment:
+                        comment_model.properties[0]["value"] = comment['text']
+                    comm = Comment(self, comment_model)
+                else:
+                    comm = Comment(self, comment)
+                # Acessar x e y de forma segura
+                x = comment.get('x', 0) if isinstance(comment, dict) else comment.x
+                y = comment.get('y', 0) if isinstance(comment, dict) else comment.y
+                comm.move(x, y)
                 comm.update_flow()
                 self.comments[i] = comm
             i = i + 1
@@ -545,5 +732,15 @@ class Diagram(GooCanvas.Canvas, DiagramModel):
     # ----------------------------------------------------------------------
     def show_block_menu(self, block, event):
         self.main_window.block_menu.show(block, event)
+
+    # ----------------------------------------------------------------------
+    def toggle_grid(self, event: Any = None) -> None:
+        """
+        Alterna a visibilidade da grade.
+        Args:
+            event: O evento que disparou a alternância (opcional)
+        """
+        self.show_grid = not self.show_grid
+        self.redraw()
 
 # ----------------------------------------------------------------------

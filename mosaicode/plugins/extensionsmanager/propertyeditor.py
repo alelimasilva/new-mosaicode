@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # noqa: E402
 """
@@ -23,6 +23,7 @@ from mosaicode.GUI.buttonbar import ButtonBar
 from mosaicode.GUI.treeview import TreeView
 from mosaicode.system import *
 import gettext
+from typing import Dict, List, Optional, Any, Union
 
 _ = gettext.gettext
 
@@ -168,7 +169,7 @@ class PropertyEditor(Gtk.ScrolledWindow):
         for widget in self.side_panel.get_children():
             try:
                 configuration[widget.get_name()] = widget.get_value()
-            except:
+            except Exception as e:
                 pass
         if "label" not in configuration or "name" not in configuration or \
                 "value" not in configuration:

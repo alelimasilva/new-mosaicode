@@ -1,0 +1,52 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "gain",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Sound output",
+  "label": "Gain",
+  "color": "50:150:250:150",
+  "group": "Sound",
+  "codes": {
+    "declaration": "\n// block_$id$ = $label$\nvar block_$id$ = context.createGain();\nvar $port[input]$ = block_$id$;\nvar $port[output]$ = block_$id$;\nvar $port[gain]$ = block_$id$.gain;\nvar $port[gain_value]$ = function(value){\n    block_$id$.gain.value = value;\n    };\n",
+    "execution": "block_$id$.gain.value = $prop[gain]$;\n"
+  },
+  "properties": [
+    {
+      "name": "gain",
+      "label": "Gain",
+      "type": "Float",
+      "lower": 0,
+      "upper": 32000,
+      "value": 1
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Input",
+      "conn_type": "Input",
+      "name": "input"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Gain",
+      "conn_type": "Input",
+      "name": "gain"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "conn_type": "Input",
+      "label": "Gain Value",
+      "name": "gain_value"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "name": "output",
+      "conn_type": "Output",
+      "label": "Output"
+    }
+  ]
+} 

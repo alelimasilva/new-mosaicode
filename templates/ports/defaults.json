@@ -1,0 +1,7 @@
+{
+  "default_values": {
+    "color": "#000000",
+    "conn_type": "INPUT",
+    "type": "float"
+  }
+} 

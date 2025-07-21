@@ -14,6 +14,7 @@ from gi.repository import GooCanvas
 from gi.repository import Pango
 from mosaicode.system import System
 from mosaicode.model.commentmodel import CommentModel
+from typing import Any, Dict, List, Optional, Union
 
 class Comment(GooCanvas.CanvasText, CommentModel):
     """
@@ -22,7 +23,7 @@ class Comment(GooCanvas.CanvasText, CommentModel):
 
     # ----------------------------------------------------------------------
 
-    def __init__(self, diagram, comment):
+    def __init__(self, diagram, comment) -> None:
         """
         This method is the constuctor.
         """
@@ -154,7 +155,7 @@ class Comment(GooCanvas.CanvasText, CommentModel):
         self.set_property("use_markup", True)
 
     # ----------------------------------------------------------------------
-    def move(self, x, y):
+    def move(self, x, y) -> None:
         """
         This method move a block.
 
@@ -176,7 +177,7 @@ class Comment(GooCanvas.CanvasText, CommentModel):
         self.translate(new_x - position[0], new_y - position[1])
 
     # ----------------------------------------------------------------------
-    def get_position(self):
+    def get_position(self) -> Any:
         """
         This method get position the block.
 
@@ -187,7 +188,7 @@ class Comment(GooCanvas.CanvasText, CommentModel):
         return x, y
 
     # ----------------------------------------------------------------------
-    def set_properties(self, data):
+    def set_properties(self, data) -> None:
         """
         This method set properties of each block.
 
@@ -197,7 +198,7 @@ class Comment(GooCanvas.CanvasText, CommentModel):
         CommentModel.set_properties(self, data)
 
     # ----------------------------------------------------------------------
-    def get_properties(self):
+    def get_properties(self) -> Any:
         """
         This method get properties of each block.
 

@@ -3,13 +3,13 @@
 """
 This module contains the PortPersistence class.
 """
-import os
+from pathlib import Path
 import inspect  # For module inspect
 import pkgutil  # For dynamic package load
 import json
-from os.path import join
 from mosaicode.model.port import Port
 from mosaicode.persistence.persistence import Persistence
+from typing import Dict, List, Optional, Any, Union
 
 
 class PortPersistence():
@@ -28,16 +28,15 @@ class PortPersistence():
             * **Types** (:class:`boolean<boolean>`)
         """
         # load the port
-        if os.path.exists(file_name) is False:
+        if not Path(file_name).exists():
             return None
 
         data = ""
         port = Port()
 
         try:
-            data_file = open(file_name, 'r')
-            data = json.load(data_file)
-            data_file.close()
+            with open(file_name, 'r') as data_file:
+                data = json.load(data_file)
 
             if data["data"] != "PORT":
                 return None
@@ -48,11 +47,13 @@ class PortPersistence():
             port.type = data["type"]
             port.language = data["language"]
             port.hint = data["hint"]
+            if not port.hint:
+                port.hint = f"[{port.type.upper()}]"
             port.color = data["color"]
             port.multiple = bool(data["multiple"])
             port.var_name = data["var_name"]
             port.code = data["code"]
-        except:
+        except (IOError, OSError) as e:
             return None
 
         if port.type == "":
@@ -86,9 +87,9 @@ class PortPersistence():
         if not Persistence.create_dir(path):
             return False
         try:
-            data_file = open(os.path.join(path, port.type + '.json'), 'w')
-            data_file.write(json.dumps(x, indent=4))
-            data_file.close()
+            file_path = Path(path) / f"{port.type}.json"
+            with open(file_path, 'w') as data_file:
+                data_file.write(json.dumps(x, indent=4))
 
         except IOError as e:
             return False

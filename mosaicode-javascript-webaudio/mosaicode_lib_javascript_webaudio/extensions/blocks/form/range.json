@@ -1,0 +1,63 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "range",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Range",
+  "label": "Range",
+  "color": "50:150:250:150",
+  "group": "Form",
+  "codes": {
+    "declaration": "\n// block_$id$ = $label$\nvar $port[value]$ = [];\n\nvar $port[invalue]$ = function(value){\n    document.getElementById(\"block_$id$\").value = value;\n    change_value$id$(value);\n    return true;\n    };\n\n",
+    "execution": "\nfunction change_value$id$(e){\n    value = document.getElementById(\"block_$id$\").value;\n    for (var i = 0; i < $port[value]$.length ; i++){\n        $port[value]$[i](value);\n    }\n};\n",
+    "html": "\n$prop[label]$ <input type=\"range\" min=\"$prop[min]$\" max=\"$prop[max]$\" onchange=\"change_value$id$(event);\" id=\"block_$id$\"><br>\n"
+  },
+  "properties": [
+    {
+      "name": "value",
+      "label": "Value",
+      "type": "Float",
+      "value": "0"
+    },
+    {
+      "name": "label",
+      "label": "Label",
+      "type": "String",
+      "value": "Label"
+    },
+    {
+      "name": "min",
+      "label": "Min",
+      "type": "Float",
+      "lower": 0,
+      "upper": 20000,
+      "step": 1,
+      "value": 0
+    },
+    {
+      "name": "max",
+      "label": "Max",
+      "type": "Float",
+      "lower": 0,
+      "upper": 20000,
+      "step": 1,
+      "value": 100
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Value",
+      "conn_type": "Output",
+      "name": "value"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Value",
+      "conn_type": "Input",
+      "name": "invalue"
+    }
+  ]
+}

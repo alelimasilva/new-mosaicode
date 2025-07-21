@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # noqa: E402
 """
@@ -34,13 +34,49 @@ class PortManager(Manager):
 
     # ----------------------------------------------------------------------
     def __init__(self, main_window):
-        Manager.__init__(self, main_window, "Code Template Manager")
-
-        self.element = Port()
-        self.get_items = System.get_ports
+        from mosaicode.plugins.extensionsmanager.porteditor import PortEditor
+        from mosaicode.model.port import Port
+        from mosaicode.system import System
+        def get_items():
+            return System.get_ports()
+        Manager.__init__(self, main_window, "Port Manager")
+        self.element = Port()  # Para adicionar novo
+        self.get_items = get_items
         self.editor = PortEditor
         self.update()
         self.show_all()
         self.show()
+
+    # Sobrescrever __run_editor para salvar no arquivo correto
+    def _PortManager__run_editor(self, element):
+        from mosaicode.plugins.extensionsmanager.porteditor import PortEditor
+        from mosaicode.persistence.portpersistence import PortPersistence
+        from mosaicode.model.port import Port
+        import os
+        port = element if isinstance(element, Port) else Port()
+        editor = PortEditor(self, port)
+        result = editor.run()
+        if result == 1:  # Gtk.ResponseType.OK
+            port = editor.get_element()
+            # Salvar no arquivo correto
+            if port.type:
+                from pathlib import Path
+                project_root = Path(os.getcwd())
+                found = False
+                for ext_dir in project_root.glob("mosaicode-*/mosaicode_lib_*/extensions/ports"):
+                    if ext_dir.is_dir():
+                        file_path = ext_dir / f"{port.type}.json"
+                        PortPersistence.save(port, str(file_path))
+                        found = True
+                        break
+                if not found:
+                    for ext_dir in project_root.glob("mosaicode-*/mosaicode_lib_*/extensions/ports"):
+                        if ext_dir.is_dir():
+                            file_path = ext_dir / f"{port.type}.json"
+                            PortPersistence.save(port, str(file_path))
+                            break
+            self.update()
+        editor.close()
+        editor.destroy()
 
 # ----------------------------------------------------------------------

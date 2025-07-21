@@ -1,12 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the MainWindow class.
 """
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, Gtk  # type: ignore
 import os
+from typing import Any, Optional, Dict, List
 
 from mosaicode.system import System as System
 from mosaicode.control.maincontrol import MainControl
@@ -20,13 +21,14 @@ from mosaicode.GUI.status import Status
 from mosaicode.GUI.toolbar import Toolbar
 from mosaicode.GUI.workarea import WorkArea
 
+
 class MainWindow(Gtk.Window):
     """
     This class contains methods related the MainWindow class.
     """
 
     # ----------------------------------------------------------------------
-    def __init__(self):
+    def __init__(self) -> None:
         """
         This method is constructor.
         """
@@ -35,19 +37,21 @@ class MainWindow(Gtk.Window):
         self.resize(
             System.get_preferences().width,
             System.get_preferences().height)
-        self.main_control = MainControl(self)
         
-        # GUI components
-        self.menu = Menu(self)
-        self.toolbar = Toolbar(self)
-        self.search = SearchBar(self)
-        self.block_notebook = BlockNotebook(self)
-        self.property_box = PropertyBox(self)
-        self.work_area = WorkArea(self)
-        self.status = Status(self)
-        self.diagram_menu = DiagramMenu()
+        # Type hints for main components
+        self.main_control: MainControl = MainControl(self)
+        
+        # GUI components with type hints
+        self.menu: Menu = Menu(self)
+        self.toolbar: Toolbar = Toolbar(self)
+        self.search: SearchBar = SearchBar(self)
+        self.block_notebook: BlockNotebook = BlockNotebook(self)
+        self.property_box: PropertyBox = PropertyBox(self)
+        self.work_area: WorkArea = WorkArea(self)
+        self.status: Status = Status(self)
+        self.diagram_menu: DiagramMenu = DiagramMenu()
         self.menu.add_help()
-        self.block_menu = BlockMenu()
+        self.block_menu: BlockMenu = BlockMenu()
 
         System.set_log(self.status)
 
@@ -61,11 +65,11 @@ class MainWindow(Gtk.Window):
         # -----------------------------------------------------
 
         # First Vertical Box
-        vbox_main = Gtk.VBox()
+        vbox_main: Gtk.VBox = Gtk.VBox()
         self.add(vbox_main)
         vbox_main.pack_start(self.menu, False, True, 0)
         vbox_main.pack_start(self.toolbar, False, False, 0)
-        self.vpaned_bottom = Gtk.Paned.new(Gtk.Orientation.VERTICAL)
+        self.vpaned_bottom: Gtk.Paned = Gtk.Paned.new(Gtk.Orientation.VERTICAL)
         vbox_main.add(self.vpaned_bottom)
 
         # vpaned_bottom
@@ -75,7 +79,7 @@ class MainWindow(Gtk.Window):
         # | status
         # -----------------------------------------------------
 
-        self.hpaned_work_area = Gtk.HPaned()
+        self.hpaned_work_area: Gtk.HPaned = Gtk.HPaned()
         self.hpaned_work_area.connect("accept-position", self.__resize)
         self.hpaned_work_area.set_position(
             System.get_preferences().hpaned_work_area)
@@ -89,7 +93,7 @@ class MainWindow(Gtk.Window):
         # -----------------------------------------------------
         # | vbox_left      ||   work_area
         # -----------------------------------------------------
-        vbox_left = Gtk.VBox(homogeneous=False, spacing=0)
+        vbox_left: Gtk.VBox = Gtk.VBox(homogeneous=False, spacing=0)
         self.hpaned_work_area.add1(vbox_left)
         self.hpaned_work_area.add2(self.work_area)
 
@@ -101,7 +105,7 @@ class MainWindow(Gtk.Window):
         # -----------------------------------------------------
 
         vbox_left.pack_start(self.search, False, False, 0)
-        self.vpaned_left = Gtk.VPaned()
+        self.vpaned_left: Gtk.VPaned = Gtk.VPaned()
         vbox_left.pack_start(self.vpaned_left, True, True, 0)
 
         # vpaned_left
@@ -125,47 +129,142 @@ class MainWindow(Gtk.Window):
         from mosaicode.plugins.extensionsmanager.extensionsmanager \
             import ExtensionsManager as em
         em().load(self)
-        
-    # ----------------------------------------------------------------------
-    def __on_key_press(self, widget, event=None):
-        if event.state == \
-                Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD2_MASK \
-                and event.keyval == Gdk.KEY_a:
-            self.main_control.select_all()
-            return True
-        else:
-            return False
 
     # ----------------------------------------------------------------------
-    def __create_frame(self, widget):
-        frame = Gtk.Frame()
+    def __create_frame(self, widget: Gtk.Widget) -> Gtk.Frame:
+        """
+        This method create a frame for widget.
+
+        Parameters:
+            * **widget** (:class:`Gtk.Widget`)
+
+        Returns:
+            * **Gtk.Frame**
+        """
+        frame: Gtk.Frame = Gtk.Frame()
         frame.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
         frame.add(widget)
-        frame.set_property("border-width", 4)
         return frame
 
     # ----------------------------------------------------------------------
-    def __resize(self, data):
-        width, height = self.get_size()
-        System.get_preferences().width = width
-        System.get_preferences().height = height
-        System.get_preferences().hpaned_work_area = self.hpaned_work_area.get_position()
-        System.get_preferences().vpaned_bottom = self.vpaned_bottom.get_position()
-        System.get_preferences().vpaned_left = self.vpaned_left.get_position()
-        self.work_area.resize(data)
+    def __resize(self, widget: Optional[Gtk.Widget] = None, data: Optional[Any] = None) -> None:
+        """
+        This method resize the window.
+
+        Parameters:
+            * **widget** (:class:`Gtk.Widget`)
+            * **data** (:class:`Any`)
+
+        Returns:
+            * **None**
+        """
+        if widget is None:
+            return
+        
+        width: int
+        height: int
+        width, height = self.get_window_size()
+        
+        preferences = System.get_preferences()
+        preferences.width = width
+        preferences.height = height
+        preferences.hpaned_work_area = self.hpaned_work_area.get_position()
+        preferences.vpaned_bottom = self.vpaned_bottom.get_position()
+        preferences.vpaned_left = self.vpaned_left.get_position()
 
     # ----------------------------------------------------------------------
-    def update(self):
-        self.main_control.update_all()
+    def __on_key_press(self, widget: Gtk.Widget, event: Gdk.EventKey) -> bool:
+        """
+        This method handle key press events.
+
+        Parameters:
+            * **widget** (:class:`Gtk.Widget`)
+            * **event** (:class:`Gdk.EventKey`)
+
+        Returns:
+            * **bool**
+        """
+        key: int = event.keyval
+        state: int = event.state
+        
+        # Ctrl+S - Save
+        if key == Gdk.KEY_s and state & Gdk.ModifierType.CONTROL_MASK:
+            self.main_control.save()
+            return True
+        
+        # Ctrl+O - Open
+        if key == Gdk.KEY_o and state & Gdk.ModifierType.CONTROL_MASK:
+            self.main_control.select_open()
+            return True
+        
+        # Ctrl+N - New
+        if key == Gdk.KEY_n and state & Gdk.ModifierType.CONTROL_MASK:
+            self.main_control.new()
+            return True
+        
+        # Ctrl+Z - Undo
+        if key == Gdk.KEY_z and state & Gdk.ModifierType.CONTROL_MASK:
+            self.main_control.undo()
+            return True
+        
+        # Ctrl+Y - Redo
+        if key == Gdk.KEY_y and state & Gdk.ModifierType.CONTROL_MASK:
+            self.main_control.redo()
+            return True
+        
+        # Delete key
+        if key == Gdk.KEY_Delete:
+            self.main_control.delete()
+            return True
+        
+        return False
 
     # ----------------------------------------------------------------------
-    def set_title(self, title):
+    def get_window_size(self) -> tuple[int, int]:
         """
-        This method set title.
+        Get the window size.
 
-            Parameters:
-                * **title** (:class:`str<str>`)
-
+        Returns:
+            tuple[int, int]: (width, height)
         """
-        Gtk.Window.set_title(self, "Mosaicode (" + title + ")")
-# ----------------------------------------------------------------------
+        return super().get_size()
+
+    # ----------------------------------------------------------------------
+    def get_property_box(self) -> PropertyBox:
+        """
+        Get the property box.
+
+        Returns:
+            PropertyBox: The property box instance
+        """
+        return self.property_box
+
+    # ----------------------------------------------------------------------
+    def get_work_area(self) -> WorkArea:
+        """
+        Get the work area.
+
+        Returns:
+            WorkArea: The work area instance
+        """
+        return self.work_area
+
+    # ----------------------------------------------------------------------
+    def get_status(self) -> Status:
+        """
+        Get the status bar.
+
+        Returns:
+            Status: The status bar instance
+        """
+        return self.status
+
+    # ----------------------------------------------------------------------
+    def get_main_control(self) -> MainControl:
+        """
+        Get the main control.
+
+        Returns:
+            MainControl: The main control instance
+        """
+        return self.main_control

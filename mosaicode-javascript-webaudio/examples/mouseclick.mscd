@@ -1,0 +1,79 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.input devices.mouseclick",
+      "id": 1,
+      "collapsed": false,
+      "x": 10.0,
+      "y": 100.0,
+      "properties": []
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.GUI.print",
+      "id": 2,
+      "collapsed": false,
+      "x": 350.0,
+      "y": 60.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "x"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.GUI.print",
+      "id": 4,
+      "collapsed": false,
+      "x": 350.0,
+      "y": 190.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "y"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.GUI.print",
+      "id": 5,
+      "collapsed": false,
+      "x": 360.0,
+      "y": 320.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "button"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 1,
+      "from_out": 1,
+      "to_block": 2,
+      "to_in": 1
+    },
+    {
+      "from_block": 1,
+      "from_out": 2,
+      "to_block": 4,
+      "to_in": 1
+    },
+    {
+      "from_block": 1,
+      "from_out": 3,
+      "to_block": 5,
+      "to_in": 1
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

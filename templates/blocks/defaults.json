@@ -1,0 +1,7 @@
+{
+  "default_values": {
+    "color": "#FF0000",
+    "group": "Test Group",
+    "language": "javascript"
+  }
+} 

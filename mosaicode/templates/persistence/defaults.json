@@ -1,0 +1,47 @@
+{
+  "serialization_formats": {
+    "diagram": {
+      "version": "1.0",
+      "data_type": "DIAGRAM",
+      "required_fields": [
+        "blocks",
+        "connections",
+        "comments"
+      ]
+    },
+    "block": {
+      "version": "1.0",
+      "data_type": "BLOCK",
+      "required_fields": [
+        "type",
+        "label",
+        "color",
+        "group"
+      ]
+    },
+    "port": {
+      "version": "1.0",
+      "data_type": "PORT",
+      "required_fields": [
+        "type",
+        "name",
+        "conn_type"
+      ]
+    },
+    "preferences": {
+      "version": "1.0",
+      "data_type": "PREFERENCES",
+      "required_fields": [
+        "author",
+        "license",
+        "version"
+      ]
+    }
+  },
+  "default_serialization": {
+    "include_metadata": true,
+    "include_timestamps": true,
+    "compress_data": false,
+    "validate_schema": true
+  }
+}

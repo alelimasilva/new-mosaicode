@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the PreferenceWindow class.
@@ -9,6 +9,7 @@ from gi.repository import Gtk
 from mosaicode.GUI.fields.combofield import ComboField
 
 import gettext
+from typing import Any, Dict, List, Optional, Union
 
 _ = gettext.gettext
 
@@ -18,7 +19,7 @@ class SelectCodeTemplate(Gtk.Dialog):
     This class contains methods related the PreferenceWindow class
     """
 
-    def __init__(self, main_window, template_list):
+    def __init__(self, main_window, template_list) -> None:
         """
         This method is the constructor.
         """
@@ -39,7 +40,7 @@ class SelectCodeTemplate(Gtk.Dialog):
         self.get_content_area().add(self.field)
 
     # ----------------------------------------------------------------------
-    def get_value(self):
+    def get_value(self) -> Any:
         self.show_all()
         response = self.run()
         index = self.field.field.get_active()

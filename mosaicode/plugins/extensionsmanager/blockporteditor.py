@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # noqa: E402
 """
@@ -25,6 +25,7 @@ from mosaicode.GUI.treeview import TreeView
 from mosaicode.system import *
 from mosaicode.model.port import Port
 import gettext
+from typing import Dict, List, Optional, Any, Union
 
 _ = gettext.gettext
 
@@ -137,11 +138,27 @@ class BlockPortEditor(Gtk.ScrolledWindow):
     def __create_side_panel(self, configuration):
         self.__clean_side_panel()
 
+        import os
+        from pathlib import Path
         connectors = []
-        ports = System.get_ports()
-        for key in ports:
-            if ports[key].language == self.block.language:
-                connectors.append(key)
+        # Sempre buscar todas as portas de todas as extensões
+        port_dirs = []
+        project_root = Path(os.getcwd())
+        for ext_dir in project_root.glob("mosaicode-*/mosaicode_lib_*/extensions/ports"):
+            if ext_dir.is_dir():
+                port_dirs.append(ext_dir)
+        # Listar todos os .json encontrados nas pastas selecionadas
+        for port_dir in port_dirs:
+            for file in port_dir.glob("*.json"):
+                if file.stem not in connectors:
+                    connectors.append(file.stem)
+        # Fallback: se não encontrou nada, usar filtro antigo por linguagem
+        if not connectors:
+            from mosaicode.system import System
+            ports = System.get_ports()
+            for key in ports:
+                if ports[key].language == self.block.language:
+                    connectors.append(key)
 
         data = {"label": _("Port Type"), "name":"type", "values": connectors}
         field = ComboField(data, None)
@@ -180,7 +197,7 @@ class BlockPortEditor(Gtk.ScrolledWindow):
         for widget in self.side_panel.get_children():
             try:
                 new_port.__dict__[widget.get_name()] = widget.get_value()
-            except:
+            except Exception as e:
                 pass
 
         if new_port.type == "":

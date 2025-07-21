@@ -1,0 +1,112 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.range",
+      "id": 1,
+      "collapsed": false,
+      "x": 310.0,
+      "y": 80.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "150.0"
+        },
+        {
+          "key": "label",
+          "value": "Label"
+        },
+        {
+          "key": "min",
+          "value": "50.0"
+        },
+        {
+          "key": "max",
+          "value": "200.0"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.print",
+      "id": 2,
+      "collapsed": false,
+      "x": 660.0,
+      "y": 190.0,
+      "properties": [
+        {
+          "key": "label",
+          "value": "Label"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.check",
+      "id": 4,
+      "collapsed": false,
+      "x": 0.0,
+      "y": 0.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "0"
+        },
+        {
+          "key": "label",
+          "value": "Label"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.webaudio.number",
+      "id": 5,
+      "collapsed": false,
+      "x": 120.0,
+      "y": 340.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": "0"
+        },
+        {
+          "key": "label",
+          "value": "Label"
+        },
+        {
+          "key": "min",
+          "value": "0"
+        },
+        {
+          "key": "max",
+          "value": "100"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 1,
+      "from_out": 1,
+      "to_block": 2,
+      "to_in": 1
+    },
+    {
+      "from_block": 5,
+      "from_out": 1,
+      "to_block": 1,
+      "to_in": 2
+    },
+    {
+      "from_block": 4,
+      "from_out": 1,
+      "to_block": 5,
+      "to_in": 2
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

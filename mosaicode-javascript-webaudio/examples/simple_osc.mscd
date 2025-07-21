@@ -1,0 +1,56 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.oscillator",
+      "id": 1,
+      "collapsed": false,
+      "x": 40.0,
+      "y": 130.0,
+      "properties": [
+        {
+          "key": "freq",
+          "value": "440"
+        },
+        {
+          "key": "type",
+          "value": "sine"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.speaker",
+      "id": 2,
+      "collapsed": false,
+      "x": 220.0,
+      "y": 130.0,
+      "properties": []
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 1,
+      "from_out": 3,
+      "to_block": 2,
+      "to_in": 0
+    }
+  ],
+  "comments": [
+    {
+      "x": 20.0,
+      "y": 10.0,
+      "properties": [
+        {
+          "key": "text",
+          "value": "This is a simple oscillator"
+        }
+      ]
+    }
+  ],
+  "authors": []
+}

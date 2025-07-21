@@ -1,0 +1,55 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "inc",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Increment",
+  "label": "Increment",
+  "color": "150:150:250:150",
+  "group": "Interface",
+  "codes": {
+    "declaration": "\n// block_$id$ = $label$\nvar block_$id$_value = $prop[value]$;\nvar block_$id$_step = $prop[step]$;\nvar $port[float]$ = [];\n\nvar $port[count]$ = function(value){\n    block_$id$_value += block_$id$_step;\n    for (var i = 0; i < $port[float]$.length ; i++){\n        $port[float]$[i](block_$id$_value);\n    }\n    return true;\n    };\n\nvar $port[value]$ = function(value){\n    block_$id$_value = value;\n    return true;\n    };\n\n"
+  },
+  "properties": [
+    {
+      "name": "value",
+      "label": "Value",
+      "type": "Float",
+      "lower": 0,
+      "upper": 20000,
+      "step": 1,
+      "value": 1
+    },
+    {
+      "name": "step",
+      "label": "Step",
+      "type": "Float",
+      "lower": -20000,
+      "upper": 20000,
+      "step": 1,
+      "value": 1
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Float",
+      "conn_type": "Output",
+      "name": "float"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Count",
+      "conn_type": "Input",
+      "name": "count"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "conn_type": "Input",
+      "label": "Value",
+      "name": "value"
+    }
+  ]
+}

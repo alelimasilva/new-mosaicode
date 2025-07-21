@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -9,6 +9,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
+from typing import Any, Dict, List, Optional, Union
 
 class BlockMenu(Gtk.Menu):
     """
@@ -25,7 +26,7 @@ class BlockMenu(Gtk.Menu):
                 * **event**
         """
         Gtk.Menu.__init__(self)
-        self.block = None
+        self.block: Optional[Any] = None
         self.delete_menu_item = Gtk.MenuItem.new_with_label("Delete")
         self.delete_menu_item.connect("activate", self.__delete_clicked)
         self.append(self.delete_menu_item)
@@ -35,7 +36,7 @@ class BlockMenu(Gtk.Menu):
         self.append(self.collapse_menu_item)
 
     # ----------------------------------------------------------------------
-    def show(self, block, event):
+    def show(self, block, event) -> None:
         self.block = block
         self.show_all()
         self.popup_at_widget(

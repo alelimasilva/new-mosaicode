@@ -5,10 +5,12 @@ This module contains the class About.
 
 import os
 import gi
+from pathlib import Path
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mosaicode.system import System as System
 import gettext
+from typing import Any, Dict, List, Optional, Union
 _ = gettext.gettext
 
 
@@ -18,7 +20,7 @@ class About(Gtk.Window):
     This class contains the information about the project.
     """
 
-    def __init__(self, main_window):
+    def __init__(self, main_window) -> None:
         """
         This method is the constuctor.
 
@@ -35,7 +37,9 @@ class About(Gtk.Window):
         # -----------------------logo mosaicode----------------------------------#
 
         image = Gtk.Image()
-        image.set_from_file(self.data_dir + "images/mosaicode2.png")
+        # Corrigir caminho do logo para app_data/mosaicode.png
+        logo_path = Path(__file__).parent.parent.parent / "app_data" / "mosaicode.png"
+        image.set_from_file(logo_path)
 
         frame = Gtk.Frame()
         frame.set_border_width(2)
@@ -104,27 +108,33 @@ class About(Gtk.Window):
         labelDevelopment = Gtk.Label.new(_("Development"))
         labelDevelopment.set_markup(_("<b>Development</b>"))
 
-        imageDevelopment = Gtk.Image()
-        imageDevelopment.set_from_file(self.data_dir + "images/mosaicode64x64.ico")
+        # Remover imagem de desenvolvimento (não existe)
+        # imageDevelopment = Gtk.Image()
+        # imageDevelopment.set_from_file(self.data_dir + "images/mosaicode64x64.ico")
 
         labelDevelopmentText = Gtk.Label.new(_('Departamento ' +
                                            'de Ciência da Computação\n' +
                                            'Universidade Federal ' +
                                            'de São João del Rei\n\n' +
                                            'Bits & Beads Research Lab\n'))
-
         labelDevelopmentText.set_justify(Gtk.Justification.CENTER)
+        labelDevelopmentText.set_halign(Gtk.Align.CENTER)
+        labelDevelopmentText.set_valign(Gtk.Align.CENTER)
 
-        textBox = Gtk.Box()
-        textBox.add(labelDevelopmentText)
+        # Centralizar texto na aba Developers
+        textBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        textBox.set_halign(Gtk.Align.CENTER)
+        textBox.set_valign(Gtk.Align.CENTER)
+        textBox.set_hexpand(True)
+        textBox.set_vexpand(True)
+        textBox.pack_start(labelDevelopmentText, True, True, 0)
 
-        imgbox = Gtk.Box()
-        imgbox.add(imageDevelopment)
-
-        developmentBox = Gtk.Box()
-        developmentBox.set_spacing(315)
-        developmentBox.add(imgbox)
-        developmentBox.add(textBox)
+        developmentBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        developmentBox.set_halign(Gtk.Align.CENTER)
+        developmentBox.set_valign(Gtk.Align.CENTER)
+        developmentBox.set_hexpand(True)
+        developmentBox.set_vexpand(True)
+        developmentBox.pack_start(textBox, True, True, 0)
 
         frame2 = Gtk.Frame()
         frame2.set_label_widget(labelDevelopment)
@@ -148,7 +158,9 @@ class About(Gtk.Window):
         hbox.pack_start(vbox_right, True, True, 0)
 
         gridFrame = Gtk.Grid()
-        gridFrame.add(developmentBox)
+        gridFrame.set_halign(Gtk.Align.CENTER)
+        gridFrame.set_valign(Gtk.Align.CENTER)
+        gridFrame.attach(developmentBox, 0, 0, 1, 1)
 
         x = Gtk.Separator()
 
@@ -195,3 +207,13 @@ class About(Gtk.Window):
 
         grid.attach_next_to(
             notebook, frameBorder, Gtk.PositionType.BOTTOM, 1, 2)
+
+        self.show_all()
+
+    # ----------------------------------------------------------------------
+    def run(self) -> None:
+        """
+        Show the about dialog.
+        """
+        self.show_all()
+        self.present()

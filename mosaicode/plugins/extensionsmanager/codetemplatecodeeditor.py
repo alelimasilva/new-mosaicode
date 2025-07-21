@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # noqa: E402
 """
@@ -23,6 +23,7 @@ from mosaicode.GUI.buttonbar import ButtonBar
 from mosaicode.GUI.treeview import TreeView
 from mosaicode.system import *
 import gettext
+from typing import Dict, List, Optional, Any, Union
 
 _ = gettext.gettext
 
@@ -199,7 +200,7 @@ class CodeTemplateCodeEditor(Gtk.ScrolledWindow):
         self.side_panel.pack_start(field, False, False, 1)
         try:
             field.set_value(configuration["name"])
-        except:
+        except Exception as e:
             pass
 
         data = {"label": _("Code"), "name":"code"}
@@ -207,7 +208,7 @@ class CodeTemplateCodeEditor(Gtk.ScrolledWindow):
         self.side_panel.pack_start(field, True, True, 1)
         try:
             field.set_value(configuration["code"])
-        except:
+        except Exception as e:
             pass
 
         field.field.connect("populate-popup", self.__populate_menu)

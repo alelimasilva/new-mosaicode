@@ -1,0 +1,42 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "button",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Button",
+  "label": "Button",
+  "color": "50:150:250:150",
+  "group": "Form",
+  "codes": {
+    "declaration": "\n// block_$id$ = $label$\nvar block_$id$_value = $prop[value]$;\nvar $port[click]$ = [];\n",
+    "execution": "\nfunction click$id$(){\n    value = document.getElementById(\"block_$id$\").value;\n    for (var i = 0; i < $port[click]$.length ; i++){\n        $port[click]$[i](value);\n    }\n};\n",
+    "html": "\n<button type=\"button\" value=\"$prop[value]$\" onClick=\"click$id$();\"\nid=\"block_$id$\">$prop[label]$</button><br>\n"
+  },
+  "properties": [
+    {
+      "name": "value",
+      "label": "Value",
+      "type": "Float",
+      "lower": 0,
+      "upper": 20000,
+      "step": 1,
+      "value": 1
+    },
+    {
+      "name": "label",
+      "label": "Label",
+      "type": "String",
+      "value": "Label"
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Click",
+      "conn_type": "Output",
+      "name": "click"
+    }
+  ]
+}

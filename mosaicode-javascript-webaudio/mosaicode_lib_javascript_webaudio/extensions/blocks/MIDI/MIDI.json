@@ -1,0 +1,31 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "midi",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "MIDI",
+  "label": "MIDI",
+  "color": "250:250:0:150",
+  "group": "MIDI",
+  "codes": {
+    "function": "\n// request MIDI access\n\nif (navigator.requestMIDIAccess) {\n    navigator.requestMIDIAccess({sysex: false}).then(MidiSuccess, MidiFailure);\n} else {\n    alert(\"No MIDI support in your browser.\");\n}\n\n// midi functions\nfunction MidiSuccess(midi) {\n    // when we get a succesful response, run this code\n    console.log('MIDI Access Object', midi);\n    var inputs = midi.inputs.values();\n\n    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {\n        // each time there is a midi message call the onMIDIMessage function\n        input.value.onmidimessage = MidiMessage;\n    }\n}\n\nfunction MidiFailure(e) {\n    // when we get a failed response, run this code\n    message = \"No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim \" + e;\n    console.log(message);\n    alert(message);\n}\n\n// Variable to keep output ports\nvar note_output = [];\nvar control_output = [];\n\nfunction MidiMessage (message) {\n    //Note On\n    if((message.data[0] == 144 && message.data[2] > 0) ||\n    // Note Off\n    (message.data[0] === 128 || (message.data[0] == 144 && message.data[2] === 0))\n    ){\n        for (var i = 0; i < note_output.length ; i++)\n            for (var j = 0; j < note_output[i].length ; j++)\n                    note_output[i][j]([message.data[1],message.data[2]]);\n    }\n\n\n    //Ctrl\n    if (message.data[0] === 176 ){\n        for (var i = 0; i < control_output.length ; i++)\n            for (var j = 0; j < control_output[i].length ; j++)\n                    control_output[i][j]([message.data[1],message.data[2]]);\n    }\n    // Not used\n    // (message.data[0] === 176 )//Drum pad\n    // (message.data[0] === 208 )//Aftertouch\n}\n\n\n",
+    "declaration": "\n// block_$id$ = Mouse\nvar $port[note]$ = [];\nvar $port[control]$ = [];\nnote_output.push($port[note]$);\ncontrol_output.push($port[control]$);\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.midi",
+      "label": "Note",
+      "conn_type": "Output",
+      "name": "note"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.midi",
+      "label": "Control",
+      "conn_type": "Output",
+      "name": "control"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the OpenFileField class.
@@ -8,6 +8,8 @@ import os
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mosaicode.GUI.fields.field import Field
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
 
 class OpenFileField(Field):
@@ -18,7 +20,7 @@ class OpenFileField(Field):
     configuration = {"label": "", "value": "", "name": ""}
 
     # --------------------------------------------------------------------------
-    def __init__(self, data, event):
+    def __init__(self, data, event) -> None:
         """
         This method is the constructor.
         """
@@ -30,7 +32,7 @@ class OpenFileField(Field):
         self.create_label()
 
         self.file = self.data["value"]
-        self.parent_window = None
+        self.parent_window: Optional[Any] = None
 
         box = Gtk.HBox()
         self.field = Gtk.Entry()
@@ -61,11 +63,17 @@ class OpenFileField(Field):
         self.dialog.set_default_response(Gtk.ResponseType.OK)
         self.dialog.set_filename(self.field.get_text())
 
+        # Always open in project root directory if no valid path is provided
         current_dir = ""
-        if os.path.isdir(self.field.get_text()):
-            current_dir = self.field.get_text()
+        if self.field.get_text() and Path(self.field.get_text()).exists():
+            if Path(self.field.get_text()).is_dir():
+                current_dir = self.field.get_text()
+            else:
+                current_dir = str(Path(self.field.get_text()).parent)
         else:
-            current_dir = os.path.dirname(self.field.get_text())
+            # Use project root as default
+            current_dir = str(Path(__file__).parent.parent.parent.parent)
+        
         self.dialog.set_current_folder(current_dir)
 
         response = self.dialog.run()
@@ -75,11 +83,11 @@ class OpenFileField(Field):
         self.dialog.destroy()
 
     # --------------------------------------------------------------------------
-    def get_value(self):
+    def get_value(self) -> Any:
         return self.field.get_text()
 
     # --------------------------------------------------------------------------
-    def set_value(self, value):
+    def set_value(self, value) -> None:
         self.field.set_text(value)
 
 # --------------------------------------------------------------------------

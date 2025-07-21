@@ -1,0 +1,50 @@
+{
+  "source": "XML_CONVERTED",
+  "data": "DIAGRAM",
+  "version": "0.0.1",
+  "zoom": 1.0,
+  "language": "javascript",
+  "code_template": {},
+  "blocks": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.form.title",
+      "id": 1,
+      "collapsed": false,
+      "x": 370.0,
+      "y": 140.0,
+      "properties": [
+        {
+          "key": "title",
+          "value": "Mosaicode - Document Title"
+        }
+      ]
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.blocks.form.text",
+      "id": 2,
+      "collapsed": false,
+      "x": 60.0,
+      "y": 100.0,
+      "properties": [
+        {
+          "key": "value",
+          "value": ""
+        },
+        {
+          "key": "label",
+          "value": "Title: "
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from_block": 2,
+      "from_out": 1,
+      "to_block": 1,
+      "to_in": 1
+    }
+  ],
+  "comments": [],
+  "authors": []
+}

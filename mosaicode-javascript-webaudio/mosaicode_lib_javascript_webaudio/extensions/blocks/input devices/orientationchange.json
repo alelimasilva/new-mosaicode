@@ -1,0 +1,32 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "orientationchange",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Orientation Change",
+  "label": "Orientation Change",
+  "color": "50:50:50:150",
+  "group": "Input Device",
+  "codes": {
+    "onload": "\nwindow.addEventListener('orientationchange', onOrientationChange$id$, false);\n                ",
+    "declaration": "\nvar $port[portrait]$ = [];\nvar $port[landscape]$ = [];\n\nfunction onOrientationChange$id$(event){\n    var isPortrait = window.orientation % 180 === 0;\n    if (window.orientation % 180 === 0) {\n        for (var i = 0 ; i < $port[portrait]$.length ; i++)\n            $port[portrait]$[i](isPortrait);\n            \n    } else {    \n        for (var i = 0 ; i < $port[landscape]$.length ; i++)\n            $port[landscape]$[i](isPortrait);\n    }                \n}\n",
+    "execution": "\nonOrientationChange$id$();\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.bool",
+      "conn_type": "Output",
+      "name": "portrait",
+      "label": "Portrait"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.bool",
+      "conn_type": "Output",
+      "name": "landscape",
+      "label": "Landscape"
+    }
+  ]
+}

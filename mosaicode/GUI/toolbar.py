@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the Toolbar class.
@@ -7,6 +7,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import gettext
+from typing import Any, Dict, List, Optional, Union
 _ = gettext.gettext
 
 
@@ -16,7 +17,7 @@ class Toolbar(Gtk.Toolbar):
     """
 
     # ----------------------------------------------------------------------
-    def __init__(self, main_window):
+    def __init__(self, main_window) -> None:
         """
         This method is the constructor is creates each menu button.
         """
@@ -26,7 +27,7 @@ class Toolbar(Gtk.Toolbar):
         self.set_hexpand(False)
         self.set_property("expand", False)
 
-        self.actions = {}
+        self.actions: Dict[str, Any] = {}
         self.__create_button(Gtk.STOCK_NEW,
                              _("New"),
                              self.main_window.main_control.new)
@@ -39,11 +40,23 @@ class Toolbar(Gtk.Toolbar):
 
         self.add(Gtk.SeparatorToolItem())
 
+        # Criar menu dropdown para o botão Run
         self.run_menu = Gtk.Menu()
+        
+        # Opção "Run" (rodar sem salvar)
+        self.run_menu_item = Gtk.MenuItem.new_with_label(_("Run"))
+        self.run_menu_item.connect("activate", self.__run_clicked, None)
+        self.run_menu.append(self.run_menu_item)
+        
+        # Opção "Save" (salvar arquivos)
+        self.save_menu_item = Gtk.MenuItem.new_with_label(_("Save"))
+        self.save_menu_item.connect("activate", self.__save_clicked, None)
+        self.run_menu.append(self.save_menu_item)
+        # Removida a opção "Save and Run"
 
         self.__create_button(Gtk.STOCK_EXECUTE,
                              _("Run"),
-                             self.main_window.main_control.run,
+                             self.__run_button_clicked,
                              self.run_menu)
 
         self.__create_button(Gtk.STOCK_SELECT_ALL,
@@ -88,7 +101,7 @@ class Toolbar(Gtk.Toolbar):
         return button
 
     # ----------------------------------------------------------------------
-    def update_threads(self, threads):
+    def update_threads(self, threads) -> None:
         for widget in self.run_menu.get_children():
             self.run_menu.remove(widget)
         for thread in threads:
@@ -113,6 +126,30 @@ class Toolbar(Gtk.Toolbar):
             Parameters:
 
         """
-        self.actions[widget]()
+        if widget in self.actions:
+            self.actions[widget]()
 
-# ----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
+    def __run_button_clicked(self, widget=None, data=None):
+        """
+        Handler para o clique no botão Run principal.
+        Executa imediatamente (igual ao menu Process > Run).
+        """
+        self.main_window.main_control.execute_only()
+        # O menu dropdown continua disponível ao clicar na seta
+
+    # ----------------------------------------------------------------------
+    def __run_clicked(self, widget, data):
+        """
+        Handler para a opção "Run" do menu.
+        Executa sem salvar, usando salvamento temporário.
+        """
+        self.main_window.main_control.execute_only()
+
+    # ----------------------------------------------------------------------
+    def __save_clicked(self, widget, data):
+        """
+        Handler para a opção "Save" do menu.
+        Salva os arquivos no local escolhido.
+        """
+        self.main_window.main_control.save_source_only()

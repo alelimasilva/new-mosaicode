@@ -1,0 +1,42 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "date",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Date",
+  "label": "Date",
+  "color": "150:10:20:150",
+  "group": "Input Device",
+  "codes": {
+    "declaration": "\n// block_$id$ = $label$\nvar $port[day]$ = [];\nvar $port[month]$ = [];\nvar $port[year]$ = [];\n\nvar $port[generate]$ = function(value){\n    var d = new Date();\n    for (var i = 0; i < $port[day]$.length ; i++){\n        $port[day]$[i](d.getDate());\n    }\n    for (var i = 0; i < $port[month]$.length ; i++){\n        $port[month]$[i](d.getMonth());\n    }\n    for (var i = 0; i < $port[year]$.length ; i++){\n        $port[year]$[i](d.getFullYear());\n    }\n    return true;\n    };\n\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Day",
+      "conn_type": "Output",
+      "name": "day"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Month",
+      "conn_type": "Output",
+      "name": "month"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Year",
+      "conn_type": "Output",
+      "name": "year"
+    },
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.float",
+      "label": "Generate",
+      "conn_type": "Input",
+      "name": "generate"
+    }
+  ]
+}

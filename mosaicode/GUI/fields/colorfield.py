@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the ColorField class.
@@ -9,6 +9,7 @@ gi.require_version('Gdk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 from mosaicode.GUI.fields.field import Field
+from typing import Dict, List, Optional, Any, Union
 
 
 class ColorField(Field):
@@ -67,7 +68,7 @@ class ColorField(Field):
         if self.color is not None:
             try:
                 color_selection.set_current_rgba(self.color)
-            except:
+            except (ValueError, TypeError) as e:
                 pass
         response = self.dialog.run()
         if response == Gtk.ResponseType.OK:

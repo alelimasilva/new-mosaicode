@@ -8,6 +8,7 @@ import os
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import gettext
+from typing import Any, Dict, List, Optional, Union
 _ = gettext.gettext
 
 
@@ -16,7 +17,7 @@ class ConfirmDialog(Gtk.MessageDialog):
     This class contains methods related the Dialog class.
     """
 
-    def __init__(self, message, main_window):
+    def __init__(self, message, main_window) -> None:
         """
         This method is the constuctor.
 
@@ -37,7 +38,7 @@ class ConfirmDialog(Gtk.MessageDialog):
         self.format_secondary_text(message)
         self.show_all()
 
-    def run(self):
+    def run(self) -> Any:
         result = super(Gtk.MessageDialog, self).run()
         self.close()
         self.destroy()

@@ -1,0 +1,25 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "whitenoise",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "White Noise",
+  "label": "White Noise",
+  "color": "50:150:250:150",
+  "group": "Sound",
+  "codes": {
+    "function": "\nWhiteNoise = function(context) {\n  var that = this;\n  this.x = 0; // Initial sample number\n  this.context = context;\n  this.node = context.createScriptProcessor(1024, 0, 2);\n  this.node.onaudioprocess = function(e) { that.process(e) };\n}\n\nWhiteNoise.prototype.process = function(e) {\n  var data_l = e.outputBuffer.getChannelData(0);\n  var data_r = e.outputBuffer.getChannelData(1);\n  for (var i = 0; i < data_l.length; ++i) {\n//    data[i] = Math.sin(this.x++);\n      data_l[i] = (Math.random() * 2) - 1;\n      data_r[i] = (Math.random() * 2) - 1;\n  }\n}\n",
+    "declaration": "\n// block_$id$ = $label$\nvar block_$id$ =  new WhiteNoise(context);\n$port[sound]$ = block_$id$.node;\n\n"
+  },
+  "properties": [],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Sound",
+      "conn_type": "Output",
+      "name": "sound"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "field_types": {
+    "Check": "CheckField",
+    "Code": "CodeField",
+    "Color": "ColorField",
+    "Combo": "ComboField",
+    "Comment": "CommentField",
+    "Float": "FloatField",
+    "Icon": "IconField",
+    "Int": "IntField",
+    "Label": "LabelField",
+    "None": "NoneField",
+    "Open File": "OpenFileField",
+    "Save File": "SaveFileField",
+    "String": "StringField",
+    "CHAR": "CharField"
+  },
+  "field_configurations": {
+    "CheckField": {
+      "label": "",
+      "value": false,
+      "name": ""
+    },
+    "ColorField": {
+      "label": "",
+      "value": "#000000",
+      "name": "",
+      "format": "hex"
+    },
+    "ComboField": {
+      "label": "",
+      "value": "",
+      "name": "",
+      "values": []
+    },
+    "CommentField": {
+      "label": "",
+      "value": "",
+      "name": ""
+    },
+    "FloatField": {
+      "label": "",
+      "value": 0.0,
+      "name": "",
+      "min": 0.0,
+      "max": 100.0
+    },
+    "IntField": {
+      "label": "",
+      "value": 0,
+      "name": "",
+      "min": 0,
+      "max": 100
+    },
+    "LabelField": {
+      "label": "",
+      "value": "",
+      "name": ""
+    },
+    "OpenFileField": {
+      "label": "",
+      "value": "",
+      "name": ""
+    },
+    "SaveFileField": {
+      "label": "",
+      "value": "",
+      "name": ""
+    },
+    "StringField": {
+      "label": "",
+      "value": "",
+      "name": "",
+      "maxlength": 0
+    },
+    "CharField": {
+      "label": "",
+      "value": "",
+      "name": ""
+    }
+  }
+}

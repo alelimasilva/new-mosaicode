@@ -147,10 +147,9 @@ class Connector(GooCanvas.CanvasGroup, ConnectionModel):
 
 
         if "Line" not in self.__widgets:
-            color = self.output_port.color
             widget = GooCanvas.CanvasPath(
                 parent=self,
-                stroke_color = color,
+                stroke_color = '#000000',
                 data=path
             )
             self.__widgets["Line"] = widget

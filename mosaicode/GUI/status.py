@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 This module contains the Status class.
@@ -8,6 +8,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Pango
+from typing import Any, Dict, List, Optional, Union
 
 
 class Status(Gtk.ScrolledWindow):
@@ -17,7 +18,7 @@ class Status(Gtk.ScrolledWindow):
 
     # ----------------------------------------------------------------------
 
-    def __init__(self, main_window):
+    def __init__(self, main_window) -> None:
         """
         This method is the constructor.
             Args:
@@ -42,14 +43,14 @@ class Status(Gtk.ScrolledWindow):
         self.tag_red = textbuffer.create_tag("normal", background="red")
 
     # ----------------------------------------------------------------------
-    def clear(self):
+    def clear(self) -> None:
         """
         The method clear the buffer.
         """
         self.status.get_buffer().set_text("")
 
     # ----------------------------------------------------------------------
-    def append_text(self, text):
+    def append_text(self, text) -> None:
         """
         This method append a text in text buffer.
 
@@ -69,7 +70,7 @@ class Status(Gtk.ScrolledWindow):
             textbuffer.get_insert(), 0.0, True, 0.5, 0.5)
 
     # ----------------------------------------------------------------------
-    def log(self, text):
+    def log(self, text) -> None:
         """
         This method set the log.
 

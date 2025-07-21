@@ -1,0 +1,44 @@
+{
+  "source": "JSON",
+  "data": "BLOCK",
+  "version": "0.0.1",
+  "type": "sinewave",
+  "language": "javascript",
+  "extension": "webaudio",
+  "help": "Sine Wave",
+  "label": "Sine Wave",
+  "color": "150:050:050:150",
+  "group": "GUI",
+  "codes": {
+    "onload": "draw_sinewave$id$();",
+    "declaration": "\n// block_$id$ = $label$\nvar block_$id$ = context.createAnalyser();\nvar $port[input]$ = block_$id$;\n",
+    "execution": "\nfunction draw_sinewave$id$(){\n    var canvas = document.getElementById(\"canvas$id$\");\n    var canvasCtx = canvas.getContext(\"2d\");\n    var bufferLength = 64;\n    var dataArray = new Uint8Array(bufferLength);\n\n    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);\n    canvasCtx.lineWidth = 2;\n    canvasCtx.strokeStyle = 'rgb(0, 0, 0)';\n\n      block_$id$.getByteTimeDomainData(dataArray);\n\n      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);\n      canvasCtx.beginPath();\n\n      var sliceWidth = canvas.width * 1.0 / bufferLength;\n      var x = 0;\n\n      for(var i = 0; i < bufferLength; i++) {\n\n        var v = dataArray[i] / 128.0;\n        var y = v * canvas.height/2;\n\n        if(i === 0) {\n          canvasCtx.moveTo(x, y);\n        } else {\n          canvasCtx.lineTo(x, y);\n        }\n\n        x += sliceWidth;\n      }\n\n      canvasCtx.stroke();\n      drawVisual = requestAnimationFrame(draw_sinewave$id$);\n}\n",
+    "html": "\n<canvas id=\"canvas$id$\" class=\"visualizer\" width=\"$prop[width]$\" height=\"$prop[height]$\"></canvas>\n"
+  },
+  "properties": [
+    {
+      "name": "width",
+      "label": "Width",
+      "type": "Float",
+      "lower": 0,
+      "upper": 32000,
+      "value": 640
+    },
+    {
+      "name": "height",
+      "label": "Height",
+      "type": "Float",
+      "lower": 0,
+      "upper": 32000,
+      "value": 240
+    }
+  ],
+  "ports": [
+    {
+      "type": "mosaicode_lib_javascript_webaudio.extensions.ports.sound",
+      "label": "Sound",
+      "conn_type": "Input",
+      "name": "input"
+    }
+  ]
+}
