@@ -3,6 +3,7 @@
 """
 This module contains the BlockPersistence class.
 """
+import copy
 import ast
 import inspect  # For module inspect
 from pathlib import Path
@@ -45,40 +46,15 @@ class BlockPersistence():
                 logger.warning(f"Invalid block data format in {file_name}")
                 return None
 
-            # Construir tipo completo baseado no caminho do arquivo
-            file_path = Path(file_name)
-            path_str = str(file_path)
-            # Lógica genérica para qualquer extensão que siga o padrão
-            blocks_marker = "/extensions/blocks/"
-            if blocks_marker in path_str:
-                # Extrai o nome do pacote da extensão
-                # Exemplo: .../mosaicode-javascript-webaudio/mosaicode_lib_javascript_webaudio/extensions/blocks/arithmetic/add.json
-                # Pacote: mosaicode_lib_javascript_webaudio
-                # Caminho relativo: arithmetic/add.json
-                # Tipo: mosaicode_lib_javascript_webaudio.extensions.blocks.arithmetic.add
-                try:
-                    # Encontrar início do nome do pacote
-                    # Busca pelo último '/' antes de 'extensions/blocks/'
-                    idx_blocks = path_str.index(blocks_marker)
-                    prefix = path_str[:idx_blocks]
-                    # O nome do pacote é o último diretório antes de 'extensions'
-                    pkg_name = Path(prefix).parts[-1]
-                    # Caminho relativo após 'extensions/blocks/'
-                    relative_path = path_str[idx_blocks + len(blocks_marker):]
-                    relative_path = relative_path.replace(".json", "")
-                    block_type = relative_path.replace("/", ".")
-                    block.type = f"{pkg_name}.extensions.blocks.{block_type}"
-                except Exception as e:
-                    logger.warning(f"Erro ao construir tipo completo para {file_name}: {e}")
-                    block.type = data["type"]
-            else:
-                block.type = data["type"]
-            block.language = data["language"]
-            block.extension = data["extension"]
-            block.help = data["help"]
-            block.color = data["color"]
-            block.label = data["label"]
-            block.group = data["group"]
+            # Definir o tipo do bloco a partir do JSON
+            block.type = data.get("type", "")
+            block.language = data.get("language", "")
+            block.extension = data.get("extension", "")
+            block.help = data.get("help", "")
+            block.label = data.get("label", "")
+            block.color = data.get("color", "#000000")
+            block.group = data.get("group", "Undefined")
+            block.version = data.get("version", "0.0.1")
 
             # Validate and fix generic labels
             if not block.label or block.label == "A" or block.label == "":
@@ -111,21 +87,29 @@ class BlockPersistence():
 
             # Portas
             ports = data["ports"]
+            in_port: int = 0
+            out_port: int = 0
+
             for idx, port_data in enumerate(ports):
                 from mosaicode.model.port import Port
-                port = Port()
+                from mosaicode.system import System as System
+                port = copy.deepcopy(System.get_ports()[port_data.get("type", "")])
                 conn_type = port_data.get("conn_type", "OUTPUT")
                 if str(conn_type).upper() == "INPUT":
-                    port.conn_type = "INPUT"
+                    port.conn_type = Port.INPUT
+                    port.type_index = in_port
+                    in_port += 1
                 else:
-                    port.conn_type = "OUTPUT"
+                    port.conn_type = Port.OUTPUT
+                    port.type_index = out_port
+                    out_port += 1
                 port.name = port_data.get("name", "")
                 port.label = port_data.get("label", "")
-                port.type = port_data.get("type", "")
-                port.color = port_data.get("color", "#FFFFFF")
                 port.type_index = port_data.get("type_index", idx)
                 port.hint = port_data.get("hint", "")
                 block.ports.append(port)
+
+            block.maxIO = max(in_port, out_port)
 
             block.file = str(file_name)
 

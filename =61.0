@@ -1,0 +1,5 @@
+Requirement already satisfied: pycairo in /usr/lib/python3/dist-packages (1.25.1)
+Requirement already satisfied: PyGObject in /usr/lib/python3/dist-packages (3.48.2)
+Requirement already satisfied: pgi in /usr/local/lib/python3.12/dist-packages (0.0.11.2)
+Requirement already satisfied: setuptools in /usr/lib/python3/dist-packages (68.1.2)
+Requirement already satisfied: wheel in /usr/lib/python3/dist-packages (0.42.0)

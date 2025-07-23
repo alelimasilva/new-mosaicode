@@ -10,7 +10,6 @@ from gi.repository import Gtk
 import gettext
 from typing import Any, Dict, List, Optional, Union
 _ = gettext.gettext
-from pathlib import Path
 
 
 class SaveDialog(Gtk.FileChooserDialog):
@@ -41,7 +40,8 @@ class SaveDialog(Gtk.FileChooserDialog):
         self.add_buttons(Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
 
         # Always open in project root directory
-        project_root = Path.cwd()
+        from pathlib import Path
+        project_root = Path(__file__).parent.parent.parent
         self.set_current_folder(str(project_root))
 
         if filename is not None:

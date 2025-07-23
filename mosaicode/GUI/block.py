@@ -370,17 +370,16 @@ class Block(GooCanvas.CanvasGroup, BlockModel):
         if self.is_collapsed:
             y = 16 + (port.type_index * 6)
         else:
-            if port.is_input():
-                y = 26 + (port.type_index * 11)
-            else:
-                # Centralizar verticalmente a porta de saída
-                y = 26 + ((self.height - 15) // 2)
+            y = 26 + (port.type_index * 11)
+ 
         if port.is_input():
             x = 0
         else:
             x = self.width
+ 
         if not self.is_collapsed:
             return (x, y)
+ 
         if port.is_input():
             return (x + 36, y - 8)
         else:

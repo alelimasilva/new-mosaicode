@@ -156,13 +156,8 @@ class CodeGenerator():
             else:
                 self.__codes[key].append('')
 
-        # LOGS DE DEPURAÇÃO PARA CONEXÕES
-        print(f"[CODEGEN-DEBUG] Bloco {block.type} possui {len(block.connections)} conexões de saída.")
-        for connection in block.connections:
-            print(f"[CODEGEN-DEBUG] Conexão: {getattr(connection.output_port, 'name', None)} -> {getattr(connection.input_port, 'name', None)}")
-            print(f"[CODEGEN-DEBUG] Código da porta: {getattr(connection.output_port, 'code', None)}")
-
         connections = ""
+        print(block.connections)
         for connection in block.connections:
             connection_code = getattr(connection.output_port, 'code', None)
             if connection_code is None:
@@ -177,7 +172,7 @@ class CodeGenerator():
                 connection.input, connection.input_port)
             connection_code = connection_code.replace("$input$", value)
             connections += connection_code
-
+        print(connections)
         self.__connections.append(connections)
         return True
 

@@ -204,18 +204,17 @@ class System:
             """Load example files with caching."""
             if self._examples_loaded:
                 return
-                
             logger.debug("Loading examples")
             self.list_of_examples.clear()
-            project_root = Path(os.getcwd())
-            # Busca por todas as pastas mosaicode-*/examples
-            for ext_dir in project_root.glob("mosaicode-*/examples"):
-                if ext_dir.is_dir():
-                    # Busca recursiva por arquivos .mscd
-                    for example_file in ext_dir.rglob("*.mscd"):
-                        # Caminho relativo ao diretório do projeto
-                        rel_path = str(example_file.relative_to(project_root))
-                        self.list_of_examples.append(rel_path)
+            extension_path = os.path.join(System.get_user_dir(),"extensions")
+            for language in os.listdir(extension_path):
+                path = os.path.join(extension_path, language)
+                path = os.path.join(path, "examples")
+                for filename in os.listdir(path):
+                    file_path = os.path.join(path, filename)
+                    if filename.endswith(".mscd"):
+                        self.list_of_examples.append(file_path)
+            self.list_of_examples.sort()
             logger.info(f"Exemplos encontrados: {len(self.list_of_examples)}")
             self._examples_loaded = True
 
@@ -261,7 +260,6 @@ class System:
                                     port = PortPersistence.load(file_path)
                                     if port and hasattr(port, 'type'):
                                         self.__ports[port.type] = port
-                                        print(f"[PORT-DEBUG] Porta carregada no sistema: {port.type} de {file_path}")
                                         logger.info(f"Porta carregada: {port.type} de {file_path}")
                 self._ports_loaded = True
 
@@ -418,7 +416,7 @@ class System:
             cls.instance = cls.__Singleton()
         
         preferences = cls.instance.get_preferences()
-        logger.debug(f"[DEBUG] get_preferences - returning preferences with default_directory: '{preferences.default_directory}'")
+#        logger.debug(f"[DEBUG] get_preferences - returning preferences with default_directory: '{preferences.default_directory}'")
         return preferences
 
     # ----------------------------------------------------------------------

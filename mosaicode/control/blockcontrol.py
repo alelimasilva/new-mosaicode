@@ -37,10 +37,6 @@ class BlockControl:
             block: The block to load ports for
             ports: Dictionary of available ports
         """
-        print(f"[PORT-DEBUG] Iniciando load_ports para bloco: {block.type}")
-        print(f"[PORT-DEBUG] Total de portas disponíveis no sistema: {len(ports)}")
-        print(f"[PORT-DEBUG] Primeiras 5 portas disponíveis: {list(ports.keys())[:5]}")
-        
         # Adjust ports attributes
         i: int = 0
         in_port: int = 0
@@ -73,14 +69,11 @@ class BlockControl:
             port_type: str = port["type"]
             # Create a copy from the port instance loaded in the System
             if port_type not in ports:
-                print(f"[PORT-DEBUG] Tipo de porta não encontrado no sistema: '{port_type}' (Porta: {port.get('name', '')})")
                 from mosaicode.system import System
                 System.log("Error Loading a Block: Port is not present in System");
                 continue
             new_port: Port = copy.deepcopy(ports[port_type])
-            print(f"[PORT-DEBUG] Tipo de porta encontrado no sistema: '{port_type}' (Porta: {port.get('name', '')})")
-            print(f"[PORT-DEBUG] Porta carregada - Tipo: {new_port.type}, Hint: {new_port.hint}, Color: {new_port.color}")
-            
+
             if "conn_type" not in port:
                 port["conn_type"] = Port.INPUT
             if port["conn_type"].upper() == "INPUT":

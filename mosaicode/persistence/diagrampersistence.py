@@ -41,7 +41,6 @@ class DiagramPersistence():
         from mosaicode.control.diagramcontrol import DiagramControl
         dc = DiagramControl(diagram)
         # load the diagram
-
         data = ""
 
         try:
@@ -130,6 +129,7 @@ class DiagramPersistence():
                         System.log("Diagram error: invalid input port index " + str(port_index))
                         continue
                 except Exception as e:
+                    System.log("Diagram error: " + str(e))
                     pass
                     continue
                 connection = ConnectionModel(diagram,

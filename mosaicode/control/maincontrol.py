@@ -145,10 +145,10 @@ class MainControl:
     # ----------------------------------------------------------------------
     def save(self, save_as: bool = False) -> bool:
         """
-        This method save the file. Only asks user for save location if needed.
+        This method save the file.
         
         Args:
-            save_as: Whether to show save as dialog (True = always show)
+            save_as: Whether to show save as dialog
             
         Returns:
             True if save was successful, False otherwise
@@ -157,21 +157,24 @@ class MainControl:
         if diagram is None:
             return False
 
-        # Se já existe caminho e não é Save As, salva direto
-        if not save_as and getattr(diagram, 'file_name', None):
+        # If diagram already has a file name and it's not save_as, save directly
+        if not save_as and diagram.file_name and diagram.file_name != "Untitled":
             success, message = DiagramControl(diagram).save()
-            if success:
-                self.set_recent_files(diagram.file_name)
-            else:
+            if not success:
                 MessageDialog("Error", message, self.main_window).run()
+            else:
+                self.set_recent_files(diagram.file_name)
             return success
 
-        # Caso contrário, pede local para salvar
+        # Show save dialog for new files or save_as
         while True:
+            # Use current file name as default if available
+            default_filename = diagram.file_name if diagram.file_name and diagram.file_name != "Untitled" else ""
+            
             dialog: SaveDialog = SaveDialog(
                 self.main_window,
                 title=_("Save Diagram"),
-                filename=getattr(diagram, 'file_name', ""),
+                filename=default_filename,
                 filetype="*.mscd")
             name: Optional[str] = dialog.run()
             if name is None:
@@ -179,10 +182,10 @@ class MainControl:
                 return False
 
             if not name.endswith("mscd"):
-                name = ("%s.mscd" % name)
+                name = (("%s" + ".mscd") % name)
 
             if Path(name).exists():
-                msg: str = _( "File exists. Overwrite?")
+                msg: str = _("File exists. Overwrite?")
                 result: int = ConfirmDialog(msg, self.main_window).run()
                 if result == Gtk.ResponseType.CANCEL:
                     continue
@@ -474,10 +477,12 @@ class MainControl:
             return False
 
         files: Dict[str, str] = generator.generate_code()
-        
         # Create temporary directory for execution
-        import tempfile
-        temp_dir = tempfile.mkdtemp(prefix="mosaicode_exec_")
+        import random
+        random_number = ''.join(random.sample('0123456789', 5))
+        temp_dir = System.DATA_DIR + "/code-gen/" + random_number
+        os.mkdir(temp_dir)
+
         System.log(f"Using temporary directory for execution: {temp_dir}")
         
         # Save files to temporary directory
@@ -525,9 +530,10 @@ class MainControl:
                 if hasattr(diagram, '_temp_exec_dir'):
                     delattr(diagram, '_temp_exec_dir')
 
-        System.log("Executing Code (temporary):\n" + command)
         thread: Thread = Thread(target=__run_temp, args=(self,))
         thread.start()
+
+        System.log("Executing Code (temporary):\n" + command)
 
         return True
 
